@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="uz" class="no-transitions">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" id="tcLight" media="(prefers-color-scheme: light)" content="#f7f8fa">
+<meta name="theme-color" id="tcDark" media="(prefers-color-scheme: dark)" content="#0b0d12">
+<meta name="description" content="Talaba ball limitini nazorat qilish paneli: qo'shilgan ballar, qolgan limit va ishlangan foiz.">
+<title>Ball Limiti Nazorat Paneli — S20054</title>
+<script>
+(function(){
+  var mode = 'auto';
+  try { mode = localStorage.getItem('blp-theme') || 'auto'; } catch (e) {}
+  if (mode !== 'light' && mode !== 'dark') mode = 'auto';
+  var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var el = document.documentElement;
+  el.dataset.themeMode = mode;
+  el.dataset.theme = mode === 'auto' ? (dark ? 'dark' : 'light') : mode;
+})();
+</script>
+<style>
+:root{
+  color-scheme: light;
+  --font-sans: "Inter","Inter var",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+  --fs-2xs: clamp(.6875rem,.67rem + .1vw,.75rem);
+  --fs-xs: clamp(.75rem,.73rem + .12vw,.8125rem);
+  --fs-sm: clamp(.8125rem,.8rem + .15vw,.875rem);
+  --fs-md: clamp(.875rem,.85rem + .2vw,1rem);
+  --fs-lg: clamp(1rem,.96rem + .25vw,1.125rem);
+  --fs-xl: clamp(1.125rem,1.06rem + .4vw,1.375rem);
+  --fs-3xl: clamp(1.75rem,1.5rem + 1.4vw,2.25rem);
+  --space-1:.25rem; --space-2:.5rem; --space-3:.75rem; --space-4:1rem; --space-5:1.25rem;
+  --space-6:1.5rem; --space-7:2rem; --space-8:2.5rem; --space-9:3rem;
+  --r-xs:6px; --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:20px; --r-full:999px;
+  --layout-max:1120px; --header-h:clamp(56px,8vw,64px);
+  --bg:#F7F8FA; --bg-surface:#FFFFFF; --bg-raised:#FFFFFF; --bg-sunken:#EEF1F5;
+  --bg-soft:#F1F3F7; --bg-hover:#F4F6FA; --bg-active:#EDF0F6;
+  --text:#11131A; --text-2:#4A5162; --text-3:#636B7A; --text-inverse:#FFFFFF;
+  --border:#E4E7EE; --border-2:#C9CFDC; --border-input:#7C8497;
+  --progress-track:#E9ECF2;
+  --accent:#4F46E5; --accent-hover:#4338CA; --accent-active:#3730A3;
+  --accent-fg:#FFFFFF; --accent-text:#4338CA; --accent-soft:#EEF0FF;
+  --success:#15803D; --success-soft:#E8F6EE;
+  --warn:#B45309;    --warn-soft:#FCF3E4;
+  --danger:#B91C1C;  --danger-soft:#FDECEC;
+  --info:#0369A1;    --info-soft:#E8F3FB;
+  --on-solid:#FFFFFF;
+  --ring:#4F46E5; --ring-offset:#FFFFFF; --focus-width:2px; --focus-offset:2px;
+  --shadow-focus:0 0 0 3px rgba(79,70,229,.25);
+  --selection-bg:#C7D2FE; --selection-fg:#1E1B4B;
+  --cat-1:#0B6BB3; --cat-1-soft:#EBF3F9; --cat-1-ink:#0A5C99;
+  --cat-2:#E07B00; --cat-2-soft:#F6F1EB; --cat-2-ink:#8F5200;
+  --cat-3:#008A62; --cat-3-soft:#EBF4F1; --cat-3-ink:#00704F;
+  --cat-4:#C0608F; --cat-4-soft:#F7EFF3; --cat-4-ink:#9C3C6E;
+  --cat-5:#C2410C; --cat-5-soft:#FAF0EC; --cat-5-ink:#A83A09;
+  --cat-6:#2E9AD5; --cat-6-soft:#ECF3F7; --cat-6-ink:#0D6895;
+  --cat-7:#B09000; --cat-7-soft:#F3F2EB; --cat-7-ink:#6E5A00;
+  --cat-8:#414A5E; --cat-8-soft:#F0F1F2; --cat-8-ink:#414A5E;
+  --shadow-xs:0 1px 2px rgba(16,20,32,.06);
+  --shadow-sm:0 1px 2px rgba(16,20,32,.06),0 1px 3px rgba(16,20,32,.08);
+  --shadow-md:0 2px 4px -1px rgba(16,20,32,.07),0 4px 12px -2px rgba(16,20,32,.09);
+  --shadow-lg:0 8px 24px -6px rgba(16,20,32,.16),0 2px 6px -2px rgba(16,20,32,.08);
+  --dur-1:100ms; --dur-2:150ms; --dur-3:200ms; --dur-4:260ms;
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --ease-in-out:cubic-bezier(.4,0,.2,1);
+  --ease-spring:cubic-bezier(.34,1.56,.64,1);
+  --surface:var(--bg-surface); --line:var(--border); --muted:var(--text-3);
+  --track:var(--progress-track); --card-bg:var(--bg-surface); --header-bg:var(--bg-surface);
+}
+[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#0B0D12; --bg-surface:#12151C; --bg-raised:#171B24; --bg-sunken:#08090D;
+  --bg-soft:#1A1F2A; --bg-hover:#1C2130; --bg-active:#222839;
+  --text:#E9EBF0; --text-2:#B3B9C7; --text-3:#8A93A6; --text-inverse:#0B0D12;
+  --border:#242A36; --border-2:#3A4252; --border-input:#5A6478;
+  --progress-track:#1C2130;
+  --accent:#5B5FDC; --accent-hover:#6B6FE8; --accent-active:#4A4EC9;
+  --accent-fg:#F5F6FF; --accent-text:#A5B0FF; --accent-soft:#1E2240;
+  --success:#5FCF95; --success-soft:#12241B;
+  --warn:#E2AE55;    --warn-soft:#2A2113;
+  --danger:#F08A80;  --danger-soft:#2C1716;
+  --info:#6FB6EA;    --info-soft:#12222E;
+  --on-solid:#0B0D12;
+  --ring:#A5B0FF; --ring-offset:#12151C;
+  --shadow-focus:0 0 0 3px rgba(165,176,255,.28);
+  --selection-bg:#3730A3; --selection-fg:#EDEFFF;
+  --cat-1:#5EA8E6; --cat-1-soft:#1E2D3C; --cat-1-ink:var(--cat-1);
+  --cat-2:#E9B04F; --cat-2-soft:#342E24; --cat-2-ink:var(--cat-2);
+  --cat-3:#45C795; --cat-3-soft:#1A312F; --cat-3-ink:var(--cat-3);
+  --cat-4:#E093BB; --cat-4-soft:#332935; --cat-4-ink:var(--cat-4);
+  --cat-5:#F08159; --cat-5-soft:#362626; --cat-5-ink:var(--cat-5);
+  --cat-6:#86CCF0; --cat-6-soft:#25323E; --cat-6-ink:var(--cat-6);
+  --cat-7:#E8DC5C; --cat-7-soft:#343526; --cat-7-ink:var(--cat-7);
+  --cat-8:#A9B3C6; --cat-8-soft:#2A2E37; --cat-8-ink:var(--cat-8);
+  --shadow-xs:0 1px 1px rgba(0,0,0,.40);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.45),0 1px 3px rgba(0,0,0,.30);
+  --shadow-md:0 2px 6px rgba(0,0,0,.45),0 8px 20px -6px rgba(0,0,0,.50);
+  --shadow-lg:0 12px 32px -8px rgba(0,0,0,.60),0 2px 8px rgba(0,0,0,.40);
+  --header-bg:var(--bg-surface);
+}
+::selection{ background:var(--selection-bg); color:var(--selection-fg); }
+*,*::before,*::after{ box-sizing:border-box; }
+[hidden]{ display:none !important; }
+html{ scroll-padding-top:calc(var(--header-h) + 16px); -webkit-text-size-adjust:100%; }
+body{
+  margin:0; min-height:100vh; min-height:100dvh; display:flex; flex-direction:column;
+  font-family:var(--font-sans); font-size:var(--fs-md); line-height:1.5;
+  color:var(--text); background:var(--bg);
+  font-feature-settings:"cv02","cv03","cv04","cv11";
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,p,dl,dd,figure{ margin:0; }
+button,input,select{ font:inherit; color:inherit; }
+img,svg{ display:block; }
+.tnum{ font-variant-numeric:tabular-nums lining-nums; font-feature-settings:"tnum" 1,"lnum" 1,"cv02" 1,"cv03" 1,"cv04" 1,"cv11" 1; }
+:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{
+  outline:var(--focus-width) solid var(--ring); outline-offset:var(--focus-offset); border-radius:6px;
+}
+.sr-only{
+  position:absolute !important; width:1px; height:1px; margin:-1px; padding:0;
+  overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0;
+}
+.container{
+  width:100%; max-width:var(--layout-max); margin-inline:auto;
+  padding-inline:max(clamp(16px,4vw,32px),env(safe-area-inset-left)) max(clamp(16px,4vw,32px),env(safe-area-inset-right));
+}
+.skip-link{
+  position:fixed; top:calc(8px + env(safe-area-inset-top)); left:max(8px,env(safe-area-inset-left));
+  z-index:500; padding:10px 14px; border-radius:var(--r-md);
+  background:var(--bg-raised); color:var(--text); border:1px solid var(--border-2);
+  box-shadow:var(--shadow-md); text-decoration:none; font-weight:600; font-size:var(--fs-sm);
+  transform:translateY(-200%); transition:transform var(--dur-2) var(--ease-out);
+}
+.skip-link:focus-visible{ transform:none; }
+.boot-warning{
+  margin:12px auto; max-width:720px; padding:14px 16px; border-radius:var(--r-md);
+  background:var(--warn-soft); border:1px solid var(--warn);
+  border-color:color-mix(in srgb,var(--warn) 35%,transparent);
+  color:var(--text); font-size:var(--fs-sm); line-height:1.5;
+}
+.boot-warning strong{ display:block; margin-bottom:4px; color:var(--warn); }
+
+.app-header{
+  position:sticky; top:0; z-index:100; padding-top:env(safe-area-inset-top);
+  background:var(--header-bg);
+  background:color-mix(in srgb,var(--header-bg) 86%,transparent);
+  -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.app-header__inner{ display:flex; align-items:center; gap:var(--space-3); min-height:var(--header-h); }
+.brand{ display:flex; align-items:center; gap:10px; min-width:0; text-decoration:none; color:inherit; }
+.brand__mark{
+  display:grid; place-items:center; inline-size:36px; block-size:36px; flex:none;
+  border-radius:var(--r-md); background:var(--accent); color:var(--accent-fg);
+  box-shadow:var(--shadow-xs);
+}
+.brand__mark svg{ inline-size:20px; block-size:20px; }
+.brand__text{ display:grid; min-width:0; line-height:1.15; }
+.brand__title{ font-size:var(--fs-md); font-weight:700; letter-spacing:-.01em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.brand__sub{ font-size:var(--fs-2xs); color:var(--muted); font-weight:500; letter-spacing:.02em; text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.app-header__actions{ display:flex; align-items:center; gap:var(--space-2); margin-inline-start:auto; }
+.chip{
+  display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:var(--r-full);
+  background:var(--bg-soft); border:1px solid var(--border); font-size:var(--fs-xs); font-weight:600;
+  color:var(--text-2); white-space:nowrap;
+}
+.chip__label{ color:var(--muted); font-weight:500; }
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  min-height:40px; padding:0 var(--space-4); border-radius:var(--r-md);
+  border:1px solid transparent; background:transparent; cursor:pointer;
+  font-size:var(--fs-sm); font-weight:600; text-decoration:none; white-space:nowrap;
+  transition:background var(--dur-1) var(--ease-out),border-color var(--dur-1),color var(--dur-1),transform var(--dur-1),box-shadow var(--dur-1);
+}
+.btn svg{ inline-size:18px; block-size:18px; flex:none; }
+.btn:active:not(:disabled){ transform:scale(.98); }
+.btn:disabled{ opacity:.55; cursor:not-allowed; }
+.btn--primary{ background:var(--accent); color:var(--accent-fg); box-shadow:var(--shadow-xs); }
+.btn--primary:hover:not(:disabled){ background:var(--accent-hover); }
+.btn--primary:active:not(:disabled){ background:var(--accent-active); }
+.btn--secondary{ background:var(--bg-surface); border-color:var(--border-2); color:var(--text); box-shadow:var(--shadow-xs); }
+.btn--secondary:hover:not(:disabled){ background:var(--bg-hover); border-color:var(--border-input); }
+.btn--ghost{ color:var(--text-2); }
+.btn--ghost:hover:not(:disabled){ background:var(--bg-hover); color:var(--text); }
+.btn--danger{ color:var(--danger); }
+.btn--danger:hover:not(:disabled){ background:var(--danger-soft); }
+.icon-btn{
+  inline-size:40px; block-size:40px; padding:0; display:grid; place-items:center;
+  position:relative; border-radius:var(--r-md); border:1px solid var(--border-2);
+  background:var(--bg-surface); color:var(--text-2); cursor:pointer; box-shadow:var(--shadow-xs);
+  transition:background var(--dur-1),border-color var(--dur-1),color var(--dur-1);
+}
+.icon-btn:hover{ background:var(--bg-hover); color:var(--text); }
+#themeToggle svg{
+  position:absolute; inline-size:20px; block-size:20px; fill:none; stroke:currentColor;
+  stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;
+  opacity:0; transform:scale(.55) rotate(-25deg);
+  transition:opacity var(--dur-3) var(--ease-out),transform var(--dur-3) var(--ease-out);
+}
+[data-theme-mode="auto"] #themeToggle .ico-auto,
+[data-theme-mode="light"] #themeToggle .ico-light,
+[data-theme-mode="dark"] #themeToggle .ico-dark{ opacity:1; transform:none; }
+.btn__label{ display:none; }
+@media (max-width:479px){ .brand__sub{ display:none; } #headerGroupChip{ display:none; } }
+@media (min-width:640px){ .btn__label{ display:inline; } }
+
+.layout{ display:grid; gap:clamp(16px,2.5vw,28px); padding-block:clamp(16px,3vw,32px) clamp(24px,5vw,56px); flex:1 0 auto; }
+.card{
+  background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--r-lg);
+  padding:clamp(16px,2.5vw,24px); box-shadow:var(--shadow-xs); min-width:0;
+}
+.panel__head{ display:flex; align-items:center; gap:var(--space-3); flex-wrap:wrap; margin-bottom:var(--space-3); }
+.panel__title{ font-size:var(--fs-lg); font-weight:650; letter-spacing:-.01em; }
+
+.student-card{
+  display:grid; grid-template-columns:auto minmax(0,1fr); gap:var(--space-4);
+  align-items:center; background:linear-gradient(180deg,var(--bg-surface),color-mix(in srgb,var(--accent) 3%,var(--bg-surface)));
+}
+.avatar{
+  display:grid; place-items:center; border-radius:var(--r-full); flex:none;
+  background:var(--accent-soft); color:var(--accent-text); font-weight:700; letter-spacing:.02em;
+}
+.avatar--lg{ inline-size:56px; block-size:56px; font-size:var(--fs-lg); }
+.student-card__info{ display:grid; gap:6px; justify-items:start; min-width:0; }
+.student-card__name{ font-size:var(--fs-xl); font-weight:700; letter-spacing:-.02em; overflow-wrap:anywhere; }
+.badge{
+  display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:var(--r-full);
+  font-size:var(--fs-xs); font-weight:650; border:1px solid; white-space:nowrap;
+}
+.badge__dot{ inline-size:6px; block-size:6px; border-radius:50%; background:currentColor; }
+.badge--ok{ color:var(--success); background:var(--success-soft); border-color:color-mix(in srgb,var(--success) 28%,transparent); }
+.badge--warn{ color:var(--warn); background:var(--warn-soft); border-color:color-mix(in srgb,var(--warn) 32%,transparent); }
+.badge--danger{ color:var(--danger); background:var(--danger-soft); border-color:color-mix(in srgb,var(--danger) 32%,transparent); }
+.student-card__meta{
+  grid-column:1/-1; display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:var(--space-3) var(--space-6); padding-top:var(--space-4); border-top:1px solid var(--border);
+}
+.def{ display:grid; gap:2px; min-width:0; }
+.def dt{ font-size:var(--fs-2xs); color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
+.def dd{ font-size:var(--fs-sm); font-weight:600; }
+
+.kpi-row{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-3); list-style:none; margin:0; padding:0; }
+.kpi{
+  display:grid; gap:6px; padding:clamp(12px,2vw,18px); background:var(--bg-surface);
+  border:1px solid var(--border); border-radius:var(--r-lg); box-shadow:var(--shadow-xs);
+  min-width:0; transition:border-color var(--dur-2),box-shadow var(--dur-2);
+}
+.kpi__top{ display:flex; align-items:center; gap:8px; font-size:var(--fs-2xs); font-weight:650; color:var(--text-2); letter-spacing:.02em; text-transform:uppercase; overflow-wrap:anywhere; }
+.kpi__icon{
+  display:grid; place-items:center; inline-size:26px; block-size:26px; border-radius:var(--r-sm);
+  background:var(--accent-soft); color:var(--accent-text); flex:none;
+}
+.kpi__icon svg{ inline-size:15px; block-size:15px; }
+.kpi__icon--ok{ background:var(--success-soft); color:var(--success); }
+.kpi__value{ font-size:clamp(1.25rem,2.2vw,1.55rem); font-weight:700; letter-spacing:-.02em; line-height:1.2; font-variant-numeric:tabular-nums; }
+.kpi__unit{ font-size:.7em; font-weight:600; color:var(--muted); }
+.kpi__sub{ font-size:var(--fs-2xs); color:var(--muted); font-variant-numeric:tabular-nums; }
+.kpi--hero{ border-color:color-mix(in srgb,var(--warn) 45%,var(--border)); box-shadow:0 0 0 1px color-mix(in srgb,var(--warn) 20%,transparent); }
+.kpi--hero .kpi__value{ color:var(--warn); }
+.kpi--hero.is-danger{ border-color:color-mix(in srgb,var(--danger) 45%,var(--border)); box-shadow:0 0 0 1px color-mix(in srgb,var(--danger) 20%,transparent); }
+.kpi--hero.is-danger .kpi__value{ color:var(--danger); }
+.kpi--hero .kpi__icon{ background:var(--warn-soft); color:var(--warn); }
+.kpi--hero.is-danger .kpi__icon{ background:var(--danger-soft); color:var(--danger); }
+@media (min-width:880px){ .kpi-row{ grid-template-columns:repeat(4,minmax(0,1fr)); } }
+
+.progress__head{ display:flex; align-items:flex-end; justify-content:space-between; gap:var(--space-4); flex-wrap:wrap; }
+.progress__right{ display:flex; flex-direction:column; align-items:flex-end; gap:2px; margin-inline-start:auto; }
+.progress__pct{ display:flex; align-items:baseline; line-height:1; }
+.progress__num{ font-size:clamp(2.1rem,5vw,3.1rem); font-weight:700; letter-spacing:-.03em; }
+.progress__sign{ margin-inline-start:3px; font-size:var(--fs-xl); font-weight:700; color:var(--text-2); }
+.progress__frac{ font-size:var(--fs-sm); color:var(--muted); }
+.progress__frac b{ color:var(--text); font-weight:650; }
+#segs{ display:contents; }
+.bar{
+  position:relative; display:flex; gap:2px; height:14px; margin-top:var(--space-4);
+  border-radius:var(--r-full); overflow:hidden; background:var(--bg-soft); background:
+    repeating-linear-gradient(135deg,color-mix(in srgb,var(--text) 7%,transparent) 0 4px,transparent 4px 10px),
+    color-mix(in srgb,var(--text) 4%,var(--bg-surface));
+  box-shadow:inset 0 0 0 1px var(--border);
+}
+.seg{
+  min-width:4px; height:100%; background:var(--seg-c,var(--accent)); transform-origin:left;
+  transition:flex-basis var(--dur-4) var(--ease-out),opacity var(--dur-2),filter var(--dur-2);
+}
+.seg--in{ animation:seg-in var(--dur-4) var(--ease-spring) both; }
+.bar[data-active] .seg{ opacity:.22; filter:saturate(.35); }
+.bar[data-active] .seg[data-active]{ opacity:1; filter:brightness(1.05) saturate(1.1); }
+.bar--pulse::after{ content:""; position:absolute; inset:0; background:var(--accent); opacity:0; pointer-events:none; animation:bar-pulse 420ms var(--ease-out); }
+@keyframes seg-in{ from{ transform:scaleX(0); } to{ transform:scaleX(1); } }
+@keyframes bar-pulse{ from{ opacity:.25; } to{ opacity:0; } }
+.legend{ display:flex; flex-wrap:wrap; gap:var(--space-2); margin-top:var(--space-4); }
+.legend-btn{
+  display:inline-flex; align-items:center; gap:8px; padding:4px 10px 4px 4px;
+  background:transparent; border:1px solid var(--border); border-radius:var(--r-full);
+  cursor:pointer; font-size:var(--fs-xs); color:inherit; text-align:start;
+  transition:border-color var(--dur-1),box-shadow var(--dur-1),background var(--dur-1);
+}
+.legend-btn:hover{ border-color:color-mix(in srgb,var(--seg-c) 55%,var(--border)); background:var(--bg-hover); }
+.legend-btn[aria-pressed="true"]{ border-color:var(--seg-c); box-shadow:0 0 0 1px var(--seg-c); }
+.legend-btn__av{
+  display:grid; place-items:center; inline-size:24px; block-size:24px; border-radius:50%;
+  background:var(--bg-soft); background:color-mix(in srgb,var(--seg-c) 18%,var(--bg-surface));
+  color:var(--seg-ink,var(--text)); font-size:var(--fs-2xs); font-weight:700; flex:none;
+}
+.legend-btn__txt{ display:grid; line-height:1.2; min-width:0; }
+.legend-btn__name{ font-weight:650; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:16ch; }
+.legend-btn__sub{ font-size:var(--fs-xs); color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:16ch; }
+.legend-btn__pts{ font-weight:700; font-variant-numeric:tabular-nums; margin-inline-start:2px; }
+.legend__empty{ margin-top:var(--space-4); font-size:var(--fs-sm); color:var(--muted); }
+
+.content-grid{ display:grid; gap:clamp(16px,2.5vw,28px); align-items:start; }
+.content-grid>*{ min-width:0; }
+@media (min-width:900px){
+  .content-grid{ grid-template-columns:minmax(320px,380px) minmax(0,1fr); }
+  .form-card{ position:sticky; top:calc(var(--header-h) + env(safe-area-inset-top) + 16px); max-height:calc(100dvh - var(--header-h) - 32px); overflow:auto; overscroll-behavior:contain; }
+}
+@media (min-width:1200px){ .content-grid{ grid-template-columns:minmax(360px,400px) minmax(0,1fr); } }
+
+.score-form{ display:grid; gap:var(--space-4); }
+.fieldset{ display:grid; gap:var(--space-4); margin:0; padding:0; border:0; min-inline-size:0; }
+.fieldset:disabled{ opacity:.62; }
+.fieldset:disabled .field__label{ color:var(--muted); }
+.field{ display:grid; gap:6px; min-width:0; }
+.field__label{ font-size:var(--fs-sm); font-weight:650; }
+.field__req{ color:var(--danger); }
+.field__input{
+  inline-size:100%; min-height:44px; padding:10px 12px; border-radius:var(--r-md);
+  border:1px solid var(--border-input); background:var(--bg-surface); color:var(--text);
+  font-variant-numeric:tabular-nums; appearance:none;
+  transition:border-color var(--dur-1) var(--ease-out),box-shadow var(--dur-2) var(--ease-out);
+}
+.field__input:focus-visible{ outline:var(--focus-width) solid var(--accent); outline-offset:-1px; border-color:var(--accent); box-shadow:none; }
+.field__input:disabled{ background:var(--bg-soft); color:var(--muted); cursor:not-allowed; }
+select.field__input{
+  background-image:linear-gradient(45deg,transparent 50%,var(--text-3) 50%),linear-gradient(135deg,var(--text-3) 50%,transparent 50%);
+  background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;
+  background-size:5px 5px,5px 5px; background-repeat:no-repeat; padding-inline-end:36px;
+}
+input[type="search"]::-webkit-search-cancel-button{ -webkit-appearance:none; display:none; }
+input[type="search"]{ -webkit-appearance:none; appearance:textfield; }
+.field__control{ display:flex; align-items:center; gap:var(--space-2); }
+.field__hint{ font-size:var(--fs-xs); color:var(--muted); font-variant-numeric:tabular-nums; }
+.field__error{ font-size:var(--fs-xs); font-weight:600; color:var(--danger); }
+.field.is-invalid .field__input{ border-color:var(--danger); }
+.field.is-invalid .field__input:focus-visible{ box-shadow:0 0 0 3px color-mix(in srgb,var(--danger) 25%,transparent); }
+.field.is-shaking{ animation:shake-x 300ms var(--ease-out); }
+@keyframes shake-x{
+  0%,100%{ transform:translateX(0); } 16%{ transform:translateX(-4px); } 33%{ transform:translateX(4px); }
+  50%{ transform:translateX(-4px); } 66%{ transform:translateX(4px); } 83%{ transform:translateX(-4px); }
+}
+.form__row{ display:grid; grid-template-columns:1fr; gap:var(--space-4); }
+@media (min-width:520px){ .form__row--split{ grid-template-columns:1fr 1fr; } }
+.form__alert{
+  padding:10px 12px; border-radius:var(--r-md); font-size:var(--fs-sm); font-weight:600;
+  color:var(--danger); background:var(--danger-soft);
+  border:1px solid color-mix(in srgb,var(--danger) 35%,transparent);
+}
+.form__actions{ display:grid; grid-template-columns:auto 1fr; gap:var(--space-2); }
+.form__submit{ width:100%; }
+.lock-banner{
+  display:flex; gap:10px; align-items:flex-start; padding:12px 14px; border-radius:var(--r-md);
+  font-size:var(--fs-sm); font-weight:600; color:var(--danger); background:var(--danger-soft);
+  border:1px solid color-mix(in srgb,var(--danger) 35%,transparent);
+}
+.lock-banner svg{ inline-size:18px; block-size:18px; flex:none; margin-top:1px; }
+
+.table-card{ padding:0; display:flex; flex-direction:column; overflow:hidden; }
+.table-card__toolbar{
+  display:flex; align-items:center; gap:var(--space-3); flex-wrap:wrap;
+  padding:clamp(16px,2.5vw,24px); border-bottom:1px solid var(--border);
+}
+.count-chip{
+  padding:3px 10px; border-radius:var(--r-full); background:var(--bg-soft); border:1px solid var(--border);
+  font-size:var(--fs-2xs); font-weight:650; color:var(--text-2); font-variant-numeric:tabular-nums;
+}
+.search-field{ position:relative; flex:1 1 180px; max-width:300px; margin-inline-start:auto; }
+.search-field .field__input{ min-height:38px; padding-inline:34px 30px; font-size:var(--fs-sm); }
+.search-field__icon{ position:absolute; inset-inline-start:10px; top:50%; translate:0 -50%; color:var(--muted); pointer-events:none; }
+.search-field__icon svg{ inline-size:16px; block-size:16px; }
+.search-field__clear{
+  position:absolute; inset-inline-end:6px; top:50%; translate:0 -50%; border:0; background:transparent;
+  color:var(--muted); cursor:pointer; inline-size:24px; block-size:24px; border-radius:var(--r-xs);
+  display:grid; place-items:center; font-size:16px; line-height:1;
+}
+.search-field__clear:hover{ background:var(--bg-hover); color:var(--text); }
+.table-scroll{ overflow:auto; overscroll-behavior:contain; max-height:clamp(240px,58vh,620px); -webkit-overflow-scrolling:touch; }
+.log-table{ width:100%; min-width:620px; border-collapse:separate; border-spacing:0; font-size:var(--fs-sm); }
+.log-table caption{ text-align:start; }
+.log-table th,.log-table td{ padding:11px 16px; text-align:start; vertical-align:middle; }
+.log-table th:first-child,.log-table td:first-child{ padding-inline-start:clamp(16px,2.5vw,24px); }
+.log-table th:last-child,.log-table td:last-child{ padding-inline-end:clamp(16px,2.5vw,24px); }
+.cell-subject{ max-width:20ch; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.log-table thead th{
+  position:sticky; top:0; z-index:3; background:var(--bg-surface);
+  border-bottom:1px solid var(--border); font-size:var(--fs-2xs); font-weight:700;
+  color:var(--text-2); text-transform:uppercase; letter-spacing:.04em; white-space:nowrap;
+}
+.log-table thead th.cell--sticky{ z-index:4; }
+.log-table tbody tr{ transition:background var(--dur-1); }
+.log-table tbody tr:hover{ background:var(--bg-hover); }
+.log-table tbody td{ border-bottom:1px solid var(--border); }
+.log-table tbody tr:last-child td{ border-bottom:0; }
+.log-table tfoot th,.log-table tfoot td{
+  position:sticky; bottom:0; background:var(--bg-surface); border-top:1px solid var(--border-2);
+  font-weight:700; font-size:var(--fs-sm);
+}
+.cell--sticky{ position:sticky; inset-inline-start:0; z-index:2; background:var(--bg-surface); }
+.log-table tbody tr:hover .cell--sticky{ background:var(--bg-hover); }
+.cell--sticky::after{
+  content:""; position:absolute; inset-block:0; inset-inline-end:0; width:1px;
+  background:var(--border); opacity:0; transition:opacity var(--dur-2);
+}
+.table-scroll[data-scrolled="true"] .cell--sticky::after{ opacity:1; }
+.log-table__num{ text-align:end !important; font-variant-numeric:tabular-nums; }
+.sort-btn{
+  display:inline-flex; align-items:center; gap:4px; border:0; background:transparent; cursor:pointer;
+  padding:2px 0; color:inherit; font:inherit; font-weight:inherit; letter-spacing:inherit; text-transform:inherit;
+  border-radius:4px;
+}
+.sort-btn:hover{ color:var(--text); }
+.sort-btn__arrow{ font-size:9px; opacity:0; transition:opacity var(--dur-1); }
+.sort-btn[data-active="true"]{ color:var(--accent-text); }
+.sort-btn[data-active="true"] .sort-btn__arrow{ opacity:1; }
+.teacher-cell{ display:flex; align-items:center; gap:10px; min-width:0; }
+.avatar--sm{ inline-size:30px; block-size:30px; font-size:var(--fs-2xs); background:var(--bg-soft); background:color-mix(in srgb,var(--seg-c) 18%,var(--bg-surface)); color:var(--seg-ink,var(--accent-text)); }
+.teacher-cell__name{ font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:22ch; }
+.points-chip{
+  display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:var(--r-full);
+  font-size:var(--fs-xs); font-weight:700; font-variant-numeric:tabular-nums;
+  color:var(--seg-ink,var(--text)); background:var(--bg-soft);
+  background:color-mix(in srgb,var(--seg-c) 12%,var(--bg-surface));
+  border:1px solid var(--seg-c);
+}
+.row-actions{ display:flex; justify-content:flex-end; gap:6px; }
+.del-btn{
+  inline-size:34px; block-size:34px; display:grid; place-items:center; border-radius:var(--r-sm);
+  border:1px solid transparent; background:transparent; color:var(--muted); cursor:pointer;
+  opacity:0; transition:opacity var(--dur-1),background var(--dur-1),color var(--dur-1);
+}
+.del-btn svg{ inline-size:16px; block-size:16px; }
+.log-table tbody tr:hover .del-btn,.del-btn:focus-visible{ opacity:1; }
+.del-btn:hover{ background:var(--danger-soft); color:var(--danger); border-color:color-mix(in srgb,var(--danger) 30%,transparent); }
+.del-btn:focus{ opacity:1; }
+@media (hover:none){ .del-btn{ opacity:1; } }
+.confirm-box{ display:flex; align-items:center; justify-content:flex-end; gap:6px; flex-wrap:wrap; }
+.confirm-box__q{ font-size:var(--fs-xs); font-weight:650; color:var(--danger); white-space:nowrap; }
+.confirm-box .btn{ min-height:32px; padding:0 10px; font-size:var(--fs-xs); }
+.empty-state{
+  display:grid; justify-items:center; gap:6px; text-align:center;
+  padding:clamp(28px,6vw,56px) clamp(16px,4vw,32px);
+}
+.empty-state__icon{
+  display:grid; place-items:center; inline-size:44px; block-size:44px; border-radius:var(--r-lg);
+  background:var(--bg-soft); color:var(--muted); margin-bottom:4px;
+}
+.empty-state__icon svg{ inline-size:22px; block-size:22px; }
+.empty-state__title{ font-weight:650; font-size:var(--fs-md); }
+.empty-state__text{ font-size:var(--fs-sm); color:var(--muted); max-width:38ch; }
+.empty-state .btn{ margin-top:var(--space-2); }
+.row-flash td::after{
+  content:""; position:absolute; inset:0; pointer-events:none; opacity:0; background:var(--accent-soft); background:color-mix(in srgb,var(--accent) 14%,transparent);
+  animation:row-flash 1.4s var(--ease-out) forwards;
+}
+.log-table tbody td{ position:relative; }
+@keyframes row-flash{ from{ opacity:1; } to{ opacity:0; } }
+tr.is-entering td{ animation:row-in var(--dur-4) var(--ease-out) both; }
+@keyframes row-in{ from{ opacity:0; transform:translateY(4px); } to{ opacity:1; transform:none; } }
+
+.app-footer{ padding-block:var(--space-5) calc(var(--space-7) + env(safe-area-inset-bottom)); border-top:1px solid var(--border); background:var(--bg); }
+.app-footer__inner{ display:flex; flex-wrap:wrap; gap:8px 24px; justify-content:space-between; align-items:center; }
+.app-footer p{ font-size:var(--fs-xs); color:var(--muted); }
+.footer-reset{
+  border:0; background:transparent; color:var(--muted); cursor:pointer; font-size:var(--fs-xs);
+  font-weight:600; text-decoration:underline; text-underline-offset:3px; border-radius:4px; padding:2px 4px;
+}
+.footer-reset:hover{ color:var(--danger); }
+.footer-reset[data-armed="true"]{ color:var(--danger); background:var(--danger-soft); text-decoration:none; }
+
+.toast-region{
+  position:fixed; z-index:500; top:calc(var(--header-h) + env(safe-area-inset-top) + 12px);
+  inset-inline-end:max(16px,env(safe-area-inset-right)); display:grid; gap:10px;
+  width:min(360px,calc(100vw - 32px)); pointer-events:none;
+}
+.toast{
+  pointer-events:auto; position:relative; display:grid; grid-template-columns:20px 1fr 24px;
+  gap:10px; align-items:start; padding:12px 12px 13px; border-radius:var(--r-md);
+  border:1px solid var(--border); background:var(--bg-raised); color:var(--text);
+  box-shadow:var(--shadow-lg); overflow:hidden; animation:toast-in var(--dur-4) var(--ease-out) both;
+}
+.toast__icon{ inline-size:20px; block-size:20px; margin-top:1px; }
+.toast__title{ font-weight:650; font-size:var(--fs-sm); line-height:1.35; }
+.toast__body{ margin-top:2px; font-size:var(--fs-xs); color:var(--muted); line-height:1.4; }
+.toast__close{
+  border:0; background:transparent; color:var(--muted); cursor:pointer;
+  inline-size:24px; block-size:24px; border-radius:var(--r-xs); display:grid; place-items:center; font-size:14px;
+}
+.toast__close:hover{ background:var(--bg-hover); color:var(--text); }
+.toast__bar{ position:absolute; inset-inline:0; bottom:0; height:2px; background:var(--accent); transform-origin:left; animation:toast-count var(--toast-dur,4000ms) linear forwards; }
+.toast--success .toast__bar{ background:var(--success); }
+.toast--success .toast__icon{ color:var(--success); }
+.toast--error{ border-color:color-mix(in srgb,var(--danger) 35%,var(--border)); }
+.toast--error .toast__bar{ background:var(--danger); }
+.toast--error .toast__icon{ color:var(--danger); }
+.toast--info .toast__icon{ color:var(--info); }
+.toast--out{ animation:toast-out var(--dur-3) var(--ease-out) forwards; }
+.toast:hover .toast__bar,.toast:focus-within .toast__bar{ animation-play-state:paused; }
+@keyframes toast-in{ from{ opacity:0; transform:translateX(16px) scale(.98); } to{ opacity:1; transform:none; } }
+@keyframes toast-out{ to{ opacity:0; transform:translateX(12px); } }
+@keyframes toast-count{ from{ transform:scaleX(1); } to{ transform:scaleX(0); } }
+@media (max-width:520px){
+  .toast-region{ top:auto; bottom:calc(16px + env(safe-area-inset-bottom)); inset-inline:16px; width:auto; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
+  .seg,.toast,.row-flash td::after{ animation:none !important; }
+  @keyframes shake-x{ 0%,100%{ transform:none; } }
+}
+.no-transitions *,.no-transitions *::before,.no-transitions *::after{ transition:none !important; animation-duration:0s !important; }
+html,body,.card,.kpi,.btn,.icon-btn,.field__input,.toast,.seg,.badge{
+  transition:background-color var(--dur-3) var(--ease-out),color var(--dur-3),border-color var(--dur-3),box-shadow var(--dur-3);
+}
+
+@media (forced-colors:active){
+  .card,.btn,.field__input,.toast,.legend-btn,.kpi{ border:1px solid CanvasText; }
+  .bar{ border:1px solid CanvasText; }
+  .seg{ margin-inline-end:2px; forced-color-adjust:none; }
+  .legend-btn[aria-pressed="true"]{ background:Highlight; color:HighlightText; forced-color-adjust:none; }
+  .badge{ border-width:2px; }
+  :focus-visible{ outline-color:Highlight; }
+}
+
+@media print{
+  :root,:root[data-theme="dark"]{
+    --bg:#fff; --bg-surface:#fff; --bg-raised:#fff; --bg-soft:#f5f5f5; --bg-hover:#fff;
+    --text:#000; --text-2:#222; --text-3:#333; --border:#bbb; --border-2:#999; --border-input:#666;
+    --progress-track:#eee; --accent:#3730A3; --accent-fg:#fff; --accent-text:#3730A3; --accent-soft:#EEF0FF;
+    --success:#166534; --warn:#92400E; --danger:#991B1B; --info:#075985;
+    --success-soft:#ECFDF5; --warn-soft:#FFFBEB; --danger-soft:#FEF2F2; --info-soft:#F0F9FF;
+    --cat-1:#0B6BB3; --cat-2:#8F5200; --cat-3:#00704F; --cat-4:#9C3C6E;
+    --cat-5:#C2410C; --cat-6:#0D6895; --cat-7:#6E5A00; --cat-8:#414A5E;
+    color-scheme:light;
+  }
+  html,body{ background:#fff !important; min-height:0 !important; }
+  .app-header,.skip-link,.toast-region,.form-card,.app-footer,.del-btn,.sort-btn__arrow,.search-field,.count-chip{ display:none !important; }
+  .sort-btn{ display:contents !important; }
+  .layout{ display:block; padding:0; flex:none; }
+  .layout>*{ margin-top:10px; }
+  .content-grid{ display:block; }
+  .card{ break-inside:auto; }
+  .student-card,.kpi,.legend-btn{ break-inside:avoid; }
+  tr{ break-inside:avoid; }
+  .card{ padding:12px; }
+  .kpi{ padding:10px 12px; }
+  .student-card__meta{ padding-top:10px; }
+  .layout{ gap:8px; }
+  .table-card{ display:block; overflow:visible; }
+  .table-scroll{ overflow:visible; max-height:none; }
+  .log-table th,.log-table td{ padding:7px 14px; }
+  .log-table{ min-width:0; }
+  .log-table thead th,.log-table tfoot th,.log-table tfoot td{ position:static; }
+  .cell--sticky{ position:static; }
+  .points-chip,.legend-btn__av{ background:#fff !important; color:#000 !important; border-color:#666 !important; }
+  .card,.kpi,.bar,.seg{ box-shadow:none; }
+  .seg{ forced-color-adjust:none; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  tr,.legend-btn{ break-inside:avoid; }
+  @page{ margin:10mm; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Asosiy mazmunga o'tish</a>
+<noscript>
+  <div class="boot-warning" role="alert">
+    <strong>Bu panel brauzerda ishlaydi.</strong>
+    Faylni yuklab olib Chrome yoki Yandex brauzerida oching — Telegram ichidagi ko'rish oynasida skriptlar ishlamaydi.
+  </div>
+</noscript>
+
+<header class="app-header">
+  <div class="app-header__inner container">
+    <a class="brand" href="#main" aria-label="Ball Limiti — asosiy mazmunga o'tish">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15a8 8 0 1 1 16 0"/><path d="M12 15l4-3.5"/><circle cx="12" cy="15" r="1.4" fill="currentColor" stroke="none"/></svg>
+      </span>
+      <span class="brand__text">
+        <span class="brand__title">Ball Limiti</span>
+        <span class="brand__sub">Nazorat paneli</span>
+      </span>
+    </a>
+    <span class="chip" title="Talaba guruhi" id="headerGroupChip">
+      <span class="chip__label">Guruh</span>
+      <span id="headerGroup">AI2-25</span>
+    </span>
+    <div class="app-header__actions">
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Mavzu: tizim" title="Mavzu: tizim">
+        <svg class="ico-auto" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4" width="19" height="13" rx="2.5"/><path d="M8 21h8M12 17.5V21"/></svg>
+        <svg class="ico-light" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.2 5.2l1.6 1.6M17.2 17.2l1.6 1.6M18.8 5.2l-1.6 1.6M6.8 17.2l-1.6 1.6"/></svg>
+        <svg class="ico-dark" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+      </button>
+      <button class="btn btn--secondary" id="printBtn" type="button" aria-label="Chop etish">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V3h10v6M7 18H4v-6h16v6h-3M9 14h6v7H9z"/></svg>
+        <span class="btn__label">Chop etish</span>
+      </button>
+    </div>
+  </div>
+</header>
+<span id="themeAnnounce" class="sr-only" role="status" aria-live="polite"></span>
+
+<main id="main" class="layout container" tabindex="-1">
+  <h1 class="sr-only">Ball limiti nazorat paneli — talaba ballari va limit sarfi</h1>
+  <section class="card student-card" aria-labelledby="studentName">
+    <span class="avatar avatar--lg" aria-hidden="true" id="studentInitials">DK</span>
+    <div class="student-card__info">
+      <h2 class="student-card__name" id="studentName">Dilnoza Karimova</h2>
+      <span class="badge badge--ok" id="statusBadge"><span class="badge__dot" aria-hidden="true"></span><span id="statusText">Faol</span></span>
+    </div>
+    <dl class="student-card__meta">
+      <div class="def"><dt>ID raqami</dt><dd id="studentId">S20054</dd></div>
+      <div class="def"><dt>Guruh</dt><dd id="studentGroup">AI2-25</dd></div>
+      <div class="def"><dt>Jami limit</dt><dd class="tnum" id="studentLimit">4.00 ball</dd></div>
+      <div class="def"><dt>Holat izohi</dt><dd id="statusHelp">Limitdan foydalanish me'yorda.</dd></div>
+    </dl>
+  </section>
+
+  <section aria-labelledby="kpiTitle">
+    <h2 class="sr-only" id="kpiTitle">Asosiy ko'rsatkichlar</h2>
+    <ul class="kpi-row">
+      <li class="kpi" data-kpi="total">
+        <span class="kpi__top"><span class="kpi__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 14a8 8 0 1 1 16 0"/><path d="M12 14l4.5-3"/></svg></span>Jami limit</span>
+        <span class="kpi__value"><span class="kpi__num" id="kpiTotal">4.00</span> <span class="kpi__unit">ball</span></span>
+        <span class="kpi__sub">Talabaga ajratilgan standart</span>
+      </li>
+      <li class="kpi" data-kpi="used">
+        <span class="kpi__top"><span class="kpi__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8.5v7M8.5 12h7"/></svg></span>Ishlatilgan ball</span>
+        <span class="kpi__value"><span class="kpi__num" id="kpiUsed">0.00</span> <span class="kpi__unit">ball</span></span>
+        <span class="kpi__sub" id="kpiSubUsed">Hozircha yozuv yo'q</span>
+      </li>
+      <li class="kpi" data-kpi="left" id="kpiLeftCard">
+        <span class="kpi__top"><span class="kpi__icon kpi__icon--ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg></span>Qolgan limit</span>
+        <span class="kpi__value"><span class="kpi__num" id="kpiLeft">4.00</span> <span class="kpi__unit">ball</span></span>
+        <span class="kpi__sub" id="kpiSubLeft">100% qoldi</span>
+      </li>
+      <li class="kpi" data-kpi="pct">
+        <span class="kpi__top"><span class="kpi__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 5L5 19"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg></span>Limit ishlatilishi</span>
+        <span class="kpi__value"><span class="kpi__num" id="kpiPct">0</span> <span class="kpi__unit">%</span></span>
+        <span class="kpi__sub" id="kpiSubCount">0 ta yozuv</span>
+      </li>
+    </ul>
+  </section>
+
+  <section class="card" aria-labelledby="progressTitle">
+    <div class="progress__head">
+      <h2 class="panel__title" id="progressTitle">Limit taqsimoti</h2>
+      <div class="progress__right">
+        <p class="progress__pct" aria-hidden="true"><span class="progress__num tnum" id="pctNum">0</span><span class="progress__sign">%</span></p>
+        <p class="progress__frac tnum"><b id="fracUsed">0.00</b> / <span id="fracTotal">4.00</span> ball</p>
+      </div>
+    </div>
+    <div class="bar" id="bar" role="progressbar" aria-label="Limit ishlatilishi" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0" aria-valuetext="Ishlatilgan 0.00 / 4.00 ball (0%). Qolgan 4.00 ball.">
+      <span id="segs"></span>
+    </div>
+    <div class="legend" id="legend" role="group" aria-label="O'qituvchilar hissalari"></div>
+    <p class="legend__empty" id="legendEmpty" hidden>Hali ball qo'shilmagan — barcha 4.00 ball mavjud.</p>
+  </section>
+
+  <div class="content-grid">
+    <section class="card form-card" aria-labelledby="formTitle">
+      <div class="panel__head">
+        <h2 class="panel__title" id="formTitle">Yangi ball qo'shish</h2>
+      </div>
+      <form class="score-form" id="scoreForm" novalidate>
+        <p class="lock-banner" id="lockBanner" role="alert" hidden>
+          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1a4 4 0 0 0-4 4v3H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-1V5a4 4 0 0 0-4-4Zm-2 7V5a2 2 0 1 1 4 0v3H8Z"/></svg>
+          <span>Limit tugagan — yangi ball qo'shib bo'lmaydi. Yozuvni o'chirsangiz, ball limitga qaytadi.</span>
+        </p>
+        <fieldset class="fieldset" id="scoreFieldset">
+          <legend class="sr-only">Yangi ball yozuvi</legend>
+          <div class="field" data-field="teacher">
+            <label class="field__label" for="fTeacher">O'qituvchi F.I.Sh. <span class="field__req" aria-hidden="true">*</span></label>
+            <input class="field__input" id="fTeacher" name="teacher" type="text" required maxlength="80" autocomplete="name" autocapitalize="words" spellcheck="false" placeholder="Masalan: G'ayrat Ochilov" aria-describedby="eTeacher">
+            <p class="field__error" id="eTeacher" role="alert" hidden></p>
+          </div>
+          <div class="field" data-field="subject">
+            <label class="field__label" for="fSubject">Fan <span class="field__req" aria-hidden="true">*</span></label>
+            <select class="field__input" id="fSubject" name="subject" required aria-describedby="eSubject">
+              <option value="" selected disabled>Fanni tanlang</option>
+              <option>Dasturlash asoslari</option>
+              <option>Ma'lumotlar bazasi va SQL</option>
+              <option>Algoritmlar va ma'lumotlar tuzilmasi</option>
+              <option>Web texnologiyalari</option>
+              <option>Kompyuter tarmoqlari</option>
+              <option value="Boshqa">Boshqa</option>
+            </select>
+            <p class="field__error" id="eSubject" role="alert" hidden></p>
+          </div>
+          <div class="field" data-field="subjectCustom" hidden>
+            <label class="field__label" for="fSubjectCustom">Fan nomi <span class="field__req" aria-hidden="true">*</span></label>
+            <input class="field__input" id="fSubjectCustom" name="subjectCustom" type="text" maxlength="60" placeholder="Masalan: Fizika" aria-describedby="eSubjectCustom">
+            <p class="field__error" id="eSubjectCustom" role="alert" hidden></p>
+          </div>
+          <div class="form__row form__row--split">
+            <div class="field" data-field="date">
+              <label class="field__label" for="fDate">Sana <span class="field__req" aria-hidden="true">*</span></label>
+              <input class="field__input" id="fDate" name="date" type="date" required aria-describedby="eDate">
+              <p class="field__error" id="eDate" role="alert" hidden></p>
+            </div>
+            <div class="field" data-field="points">
+              <label class="field__label" for="fPoints">Ball <span class="field__req" aria-hidden="true">*</span></label>
+              <div class="field__control">
+              <input class="field__input" id="fPoints" name="points" type="text" inputmode="decimal" autocomplete="off" required placeholder="0.00" aria-describedby="fPointsHint ePoints">
+              </div>
+              <p class="field__hint" id="fPointsHint">Qolgan limit: 4.00 ball</p>
+              <p class="field__error" id="ePoints" role="alert" hidden></p>
+            </div>
+          </div>
+        </fieldset>
+        <p class="form__alert" id="formAlert" role="alert" hidden></p>
+        <div class="form__actions">
+          <button class="btn btn--secondary" id="fillRemaining" type="button">Qolganini</button>
+          <button class="btn btn--primary form__submit" id="submitBtn" type="submit">Ball qo'shish</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card table-card" aria-labelledby="logTitle">
+      <div class="table-card__toolbar">
+        <h2 class="panel__title" id="logTitle">Ball yozuvlari</h2>
+        <span class="count-chip tnum" id="logCount" aria-live="off">0 ta yozuv</span>
+        <div class="search-field">
+          <span class="search-field__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </span>
+          <label class="sr-only" for="logSearch">Jadvalda qidirish</label>
+          <input class="field__input" id="logSearch" type="search" placeholder="O'qituvchi yoki fan…" autocomplete="off">
+          <button class="search-field__clear" id="logSearchClear" type="button" aria-label="Qidiruvni tozalash" hidden>×</button>
+        </div>
+      </div>
+      <div class="table-scroll" id="tableScroll" role="region" aria-label="Ball yozuvlari jadvali" tabindex="0">
+        <table class="log-table" id="logTable">
+          <caption class="sr-only" id="logCaption">Ball yozuvlari</caption>
+          <thead>
+            <tr>
+              <th class="cell--sticky" scope="col" aria-sort="none"><button class="sort-btn" type="button" data-sort="teacher">O'qituvchi F.I.Sh. <span class="sort-btn__arrow" aria-hidden="true">▲</span></button></th>
+              <th scope="col" aria-sort="none"><button class="sort-btn" type="button" data-sort="subject">Fan <span class="sort-btn__arrow" aria-hidden="true">▲</span></button></th>
+              <th scope="col" aria-sort="none"><button class="sort-btn" type="button" data-sort="date">Sana <span class="sort-btn__arrow" aria-hidden="true">▲</span></button></th>
+              <th class="log-table__num" scope="col" aria-sort="none"><button class="sort-btn" type="button" data-sort="points">Ball <span class="sort-btn__arrow" aria-hidden="true">▲</span></button></th>
+              <th scope="col"><span class="sr-only">Amallar</span></th>
+            </tr>
+          </thead>
+          <tbody id="logBody"></tbody>
+          <tfoot>
+            <tr>
+              <th class="cell--sticky" scope="row">Jami</th>
+              <td colspan="2"></td>
+              <td class="log-table__num tnum" id="logTotal">0.00</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="empty-state" id="logEmpty" hidden>
+        <span class="empty-state__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16v13H4zM4 7l2-3h12l2 3M9 12h6"/></svg></span>
+        <p class="empty-state__title">Hozircha yozuv yo'q</p>
+        <p class="empty-state__text">Birinchi ballni qo'shish uchun shaklni to'ldiring.</p>
+        <button class="btn btn--secondary" type="button" id="emptyCta">Shaklga o'tish</button>
+      </div>
+      <div class="empty-state" id="logFilterEmpty" hidden>
+        <span class="empty-state__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+        <p class="empty-state__title">Hech narsa topilmadi</p>
+        <p class="empty-state__text">Boshqa so'z bilan urinib ko'ring yoki qidiruvni tozalang.</p>
+        <button class="btn btn--secondary" type="button" id="filterClearCta">Qidiruvni tozalash</button>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="app-footer">
+  <div class="app-footer__inner container">
+    <p>Ma'lumotlar faqat shu brauzerda (localStorage) saqlanadi.</p>
+    <p>
+      Ball Limiti Nazorat Paneli · <span id="year">2026</span> ·
+      <button class="footer-reset" id="resetBtn" type="button">Demo ma'lumotlarni tiklash</button>
+    </p>
+  </div>
+</footer>
+
+<div class="toast-region" id="toasts" aria-atomic="false"></div>
+<div class="sr-only" id="live" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+"use strict";
+/*__BLP_CORE_START__*/
+const CONFIG = Object.freeze({
+  STORAGE_KEY: "blp-state-v1",
+  LEGACY_KEYS: ["blp-state-v0", "blp-state"],
+  THEME_KEY: "blp-theme",
+  STATE_VERSION: 1,
+  DEFAULT_LIMIT: 4.0,
+  EPS: 1e-9,
+  WARN_RATIO: 0.75,
+  SAVE_DEBOUNCE_MS: 200,
+  SEARCH_DEBOUNCE_MS: 120,
+  RESUBMIT_GUARD_MS: 250,
+  COUNT_UP_MS: 400,
+  ROW_FLASH_MS: 1600,
+  HERO_RATIO: 0.25,
+  POINTS_MAX_CHARS: 9,
+  MAX_ENTRIES: 2000,
+  SEED_STUDENT: Object.freeze({ name: "Dilnoza Karimova", id: "S20054", group: "AI2-25" }),
+  MSG: Object.freeze({
+    TEACHER_REQUIRED: "O'qituvchi ismini kiriting",
+    TEACHER_SHORT: "O'qituvchi ismi kamida 3 ta harfdan iborat bo'lishi kerak",
+    SUBJECT_REQUIRED: "Fan nomini tanlang",
+    DATE_REQUIRED: "Sanani kiriting",
+    DATE_FORMAT: "Sana noto'g'ri formatda — kun.oy.yil ko'rinishida kiriting",
+    DATE_INVALID: "Sana noto'g'ri — kelajak sanani kiritib bo'lmaydi",
+    DATE_OLD: "Sana noto'g'ri — 1 yildan ortiq eski sanani kiritib bo'lmaydi",
+    POINTS_NOT_POSITIVE: "Ball miqdorini 0 dan katta kiriting",
+    POINTS_OVER_LIMIT: "Kiritilgan ball mavjud limitdan oshib ketdi!"
+  })
+});
+const STATUS = Object.freeze({ ACTIVE: "active", WARNING: "warning", EXHAUSTED: "exhausted" });
+const PALETTE_SIZE = 8;
+
+function pad2(n) { return String(n).padStart(2, "0"); }
+function isoFromDate(d) { return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
+function todayISO() { return isoFromDate(new Date()); }
+function round1(x) { return Math.round(x * 10) / 10; }
+function eq(a, b) { return Math.abs(a - b) <= CONFIG.EPS; }
+function gte(a, b) { return a - b >= -CONFIG.EPS; }
+function gt(a, b) { return a - b > CONFIG.EPS; }
+function toNumber(v) {
+  if (typeof v === "number") return v;
+  const s = String(v == null ? "" : v).trim().replace(/\s+/g, "").replace(",", ".");
+  return s === "" ? NaN : Number(s);
+}
+function parseISODate(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ""));
+  if (!m) return null;
+  const y = +m[1], mo = +m[2], d = +m[3];
+  const dt = new Date(y, mo - 1, d);
+  return dt.getFullYear() === y && dt.getMonth() === mo - 1 && dt.getDate() === d ? dt : null;
+}
+function newId() {
+  try {
+    if (window.crypto && typeof window.crypto.randomUUID === "function") return window.crypto.randomUUID();
+  } catch (e) {}
+  return "e-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+}
+function colorIndexOf(name) {
+  const s = String(name || "").trim().toLowerCase();
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+  return 1 + (Math.abs(h) % PALETTE_SIZE);
+}
+function teacherKey(name) { return String(name || "").trim().toLowerCase().replace(/\s{2,}/g, " "); }
+function seedState() {
+  const base = new Date();
+  const ago = (days) => { const d = new Date(base.getFullYear(), base.getMonth(), base.getDate() - days); return isoFromDate(d); };
+  const rows = [
+    ["Kamola Yusupova", "Matematika", 1.0, ago(12)],
+    ["Aziz Karimov", "Fizika", 0.8, ago(9)],
+    ["Nilufar Rahimova", "Ingliz tili", 0.5, ago(5)],
+    ["Jasur Toshmatov", "Informatika", 0.3, ago(2)]
+  ];
+  return {
+    version: CONFIG.STATE_VERSION,
+    student: { name: CONFIG.SEED_STUDENT.name, id: CONFIG.SEED_STUDENT.id, group: CONFIG.SEED_STUDENT.group, limit: CONFIG.DEFAULT_LIMIT },
+    entries: rows.map((r) => ({
+      id: newId(), teacher: r[0], subject: r[1], points: r[2], date: r[3],
+      colorIndex: colorIndexOf(r[0]), createdAt: new Date().toISOString()
+    }))
+  };
+}
+function usedPoints(s) { return round1(s.entries.reduce((a, e) => a + e.points, 0)); }
+function remainingPoints(s) { return round1(s.student.limit - usedPoints(s)); }
+function percentUsed(s) { return s.student.limit <= 0 ? 100 : round1((usedPoints(s) / s.student.limit) * 100); }
+function statusOf(s) {
+  const u = usedPoints(s);
+  if (gte(u, s.student.limit)) return STATUS.EXHAUSTED;
+  if (s.student.limit > 0 && u / s.student.limit >= CONFIG.WARN_RATIO) return STATUS.WARNING;
+  return STATUS.ACTIVE;
+}
+function validate(input, s) {
+  const teacher = String(input.teacher == null ? "" : input.teacher).trim().replace(/\s{2,}/g, " ").slice(0, 80);
+  const subjectRaw = String(input.subject == null ? "" : input.subject).trim();
+  const custom = String(input.subjectCustom == null ? "" : input.subjectCustom).trim().replace(/\s{2,}/g, " ").slice(0, 80);
+  const subject = subjectRaw === "Boshqa" ? custom : subjectRaw;
+  const dateRaw = String(input.date == null ? "" : input.date).trim();
+  const points = toNumber(input.points);
+  const remaining = remainingPoints(s);
+
+  if (!teacher) return { ok: false, field: "teacher", code: "TEACHER_REQUIRED", msg: CONFIG.MSG.TEACHER_REQUIRED };
+  if (teacher.length < 3) return { ok: false, field: "teacher", code: "TEACHER_SHORT", msg: CONFIG.MSG.TEACHER_SHORT };
+  if (!subject) return { ok: false, field: subjectRaw === "Boshqa" ? "subjectCustom" : "subject", code: "SUBJECT_REQUIRED", msg: CONFIG.MSG.SUBJECT_REQUIRED };
+
+  if (!dateRaw) return { ok: false, field: "date", code: "DATE_REQUIRED", msg: CONFIG.MSG.DATE_REQUIRED };
+  const parsed = parseISODate(dateRaw);
+  if (!parsed) return { ok: false, field: "date", code: "DATE_INVALID", msg: CONFIG.MSG.DATE_FORMAT };
+  const today = todayISO();
+  if (dateRaw > today) return { ok: false, field: "date", code: "DATE_FUTURE", msg: CONFIG.MSG.DATE_INVALID };
+  const yearAgo = new Date();
+  yearAgo.setFullYear(yearAgo.getFullYear() - 1);
+  if (dateRaw < isoFromDate(yearAgo)) return { ok: false, field: "date", code: "DATE_OLD", msg: CONFIG.MSG.DATE_OLD };
+
+  const rounded = round1(points);
+  if (!Number.isFinite(points) || rounded <= 0) return { ok: false, field: "points", code: "POINTS_NOT_POSITIVE", msg: CONFIG.MSG.POINTS_NOT_POSITIVE };
+  if (gt(rounded, remaining)) return { ok: false, field: "points", code: "POINTS_OVER_LIMIT", msg: CONFIG.MSG.POINTS_OVER_LIMIT };
+
+  return { ok: true, field: null, code: null, msg: null, value: { teacher, subject, date: dateRaw, points: rounded } };
+}
+function applyAdd(s, input) {
+  const v = validate(input, s);
+  if (!v.ok) return { ok: false, code: v.code, field: v.field, msg: v.msg, state: s };
+  if (s.entries.length >= CONFIG.MAX_ENTRIES) return { ok: false, code: "MAX_ENTRIES", field: null, msg: "Yozuvlar soni chegarasiga yetdi.", state: s };
+  const entry = {
+    id: newId(), teacher: v.value.teacher, subject: v.value.subject, date: v.value.date,
+    points: v.value.points, colorIndex: colorIndexOf(v.value.teacher), createdAt: new Date().toISOString()
+  };
+  return { ok: true, code: null, field: null, msg: null, entry: entry, state: { version: s.version, student: s.student, entries: s.entries.concat([entry]) } };
+}
+function applyRemove(s, id) {
+  const next = s.entries.filter((e) => e.id !== id);
+  if (next.length === s.entries.length) return { ok: false, code: "NOT_FOUND", state: s };
+  return { ok: true, code: null, state: { version: s.version, student: s.student, entries: next } };
+}
+function applyLimit(s, limit) {
+  const n = toNumber(limit);
+  if (!Number.isFinite(n) || n < 0) return { ok: false, code: "LIMIT_INVALID", state: s };
+  if (gt(usedPoints(s), n)) return { ok: false, code: "LIMIT_BELOW_USED", state: s };
+  return { ok: true, code: null, state: { version: s.version, student: { name: s.student.name, id: s.student.id, group: s.student.group, limit: round1(n) }, entries: s.entries } };
+}
+function sanitizeState(raw) {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
+  const st = raw.student && typeof raw.student === "object" ? raw.student : {};
+  const limitNum = toNumber(st.limit);
+  const student = {
+    name: typeof st.name === "string" && st.name.trim() ? st.name.trim().slice(0, 80) : CONFIG.SEED_STUDENT.name,
+    id: typeof st.id === "string" && st.id.trim() ? st.id.trim().slice(0, 40) : CONFIG.SEED_STUDENT.id,
+    group: typeof st.group === "string" && st.group.trim() ? st.group.trim().slice(0, 40) : CONFIG.SEED_STUDENT.group,
+    limit: Number.isFinite(limitNum) && limitNum >= 0 ? round1(limitNum) : CONFIG.DEFAULT_LIMIT
+  };
+  const list = Array.isArray(raw.entries) ? raw.entries.slice(0, CONFIG.MAX_ENTRIES) : [];
+  const entries = [];
+  for (const e of list) {
+    if (!e || typeof e !== "object") continue;
+    const teacher = typeof e.teacher === "string" ? e.teacher.trim().replace(/\s{2,}/g, " ").slice(0, 80) : "";
+    const subject = typeof e.subject === "string" ? e.subject.trim().slice(0, 80) : "";
+    const date = typeof e.date === "string" && parseISODate(e.date) ? e.date : null;
+    const points = round1(toNumber(e.points));
+    if (!teacher || !subject || !date || !Number.isFinite(points) || points <= 0) continue;
+    entries.push({
+      id: typeof e.id === "string" && e.id ? e.id.slice(0, 64) : newId(),
+      teacher, subject, date, points,
+      colorIndex: Number.isInteger(e.colorIndex) && e.colorIndex >= 1 && e.colorIndex <= PALETTE_SIZE ? e.colorIndex : colorIndexOf(teacher),
+      createdAt: typeof e.createdAt === "string" ? e.createdAt.slice(0, 40) : new Date().toISOString()
+    });
+  }
+  const clean = { version: CONFIG.STATE_VERSION, student, entries };
+  return gt(usedPoints(clean), student.limit) ? null : clean;
+}
+function migrateState(raw) {
+  if (!raw || typeof raw !== "object") return null;
+  const v = Number.isInteger(raw.version) ? raw.version : 0;
+  if (v > CONFIG.STATE_VERSION) return null;
+  return raw;
+}
+/*__BLP_CORE_END__*/
+
+const THEME = (() => {
+  const MODES = ["auto", "light", "dark"];
+  const LABEL = { auto: "Mavzu: tizim", light: "Mavzu: yorug'", dark: "Mavzu: qorong'i" };
+  const mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  const root = document.documentElement;
+  let mode = MODES.indexOf(root.dataset.themeMode) >= 0 ? root.dataset.themeMode : "auto";
+  let memory = mode, booted = false;
+
+  function read() {
+    try { const v = localStorage.getItem(CONFIG.THEME_KEY); return MODES.indexOf(v) >= 0 ? v : "auto"; }
+    catch (e) { return memory; }
+  }
+  function write(v) { memory = v; try { localStorage.setItem(CONFIG.THEME_KEY, v); } catch (e) {} }
+  function metaTheme(resolved) {
+    const l = document.getElementById("tcLight"), d = document.getElementById("tcDark");
+    if (!l || !d) return;
+    l.media = resolved === "light" ? "" : "not all";
+    d.media = resolved === "dark" ? "" : "not all";
+  }
+  function apply(next) {
+    mode = MODES.indexOf(next) >= 0 ? next : "auto";
+    const resolved = mode === "auto" ? (mq && mq.matches ? "dark" : "light") : mode;
+    root.dataset.theme = resolved;
+    root.dataset.themeMode = mode;
+    const btn = document.getElementById("themeToggle");
+    if (btn) { btn.setAttribute("aria-label", LABEL[mode]); btn.title = LABEL[mode]; }
+    if (booted) { const live = document.getElementById("themeAnnounce"); if (live) live.textContent = LABEL[mode]; }
+    metaTheme(resolved);
+    return resolved;
+  }
+  function cycle() { const next = MODES[(MODES.indexOf(mode) + 1) % MODES.length]; write(next); apply(next); }
+  function init() {
+    if (mq) { if (mq.addEventListener) mq.addEventListener("change", () => { if (mode === "auto") apply("auto"); }); else if (mq.addListener) mq.addListener(() => { if (mode === "auto") apply("auto"); }); }
+    window.addEventListener("storage", (e) => { if (e.key === CONFIG.THEME_KEY) apply(read()); });
+    const btn = document.getElementById("themeToggle");
+    if (btn) btn.addEventListener("click", cycle);
+    apply(mode);
+    booted = true;
+    const unlock = () => requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("no-transitions")));
+    if (document.readyState === "complete") unlock(); else window.addEventListener("load", unlock, { once: true });
+  }
+  return { init, cycle, apply, get mode() { return mode; } };
+})();
+
+const $ = (sel, root) => (root || document).querySelector(sel);
+const $$ = (sel, root) => Array.prototype.slice.call((root || document).querySelectorAll(sel));
+function formatNumber(value, decimals) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return "—";
+  const neg = n < 0;
+  const parts = Math.abs(n).toFixed(decimals).split(".");
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, "\u202F");
+  return (neg ? "-" : "") + parts.join(".");
+}
+const NF2 = { format: (v) => formatNumber(v, 2) };
+const NF1 = { format: (v) => formatNumber(v, Number.isInteger(Number(v)) ? 0 : 1) };
+const COLL = (() => { try { return new Intl.Collator("uz", { sensitivity: "base" }); } catch (e) { return new Intl.Collator("ru", { sensitivity: "base" }); } })();
+const REDUCED = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : { matches: false };
+
+const fmtDate = (iso) => { const d = parseISODate(iso); return d ? pad2(d.getDate()) + "." + pad2(d.getMonth() + 1) + "." + d.getFullYear() : "—"; };
+const fmtRelative = (iso) => {
+  const d = parseISODate(iso); if (!d) return "—";
+  const now = new Date();
+  const a = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  const b = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  const diff = Math.round((a - b) / 86400000);
+  if (diff === 0) return "bugun";
+  if (diff === 1) return "kecha";
+  if (diff > 1 && diff < 7) return diff + " kun oldin";
+  return fmtDate(iso);
+};
+
+let state = null;
+let storageOK = true;
+let stateRecovered = false;
+let saveTimer = 0;
+let dirty = false;
+let lastSubmitAt = 0;
+let pendingDeleteId = null;
+let hlTeacher = null;
+let sort = { key: "date", dir: "desc" };
+let filterQuery = "";
+let firstRender = true;
+
+function loadState() {
+  const readKey = (key) => {
+    let raw = null;
+    try { raw = localStorage.getItem(key); }
+    catch (e) { storageOK = false; return null; }
+    if (!raw) return null;
+    try { return JSON.parse(raw); } catch (e) { return null; }
+  };
+  try {
+    localStorage.setItem(CONFIG.STORAGE_KEY + "-probe", "1");
+    localStorage.removeItem(CONFIG.STORAGE_KEY + "-probe");
+  } catch (e) { storageOK = false; }
+  let raw = readKey(CONFIG.STORAGE_KEY);
+  if (!raw) for (const k of CONFIG.LEGACY_KEYS) { raw = readKey(k); if (raw) break; }
+  const migrated = raw ? migrateState(raw) : null;
+  const clean = migrated ? sanitizeState(migrated) : null;
+  if (clean) return clean;
+  if (raw) stateRecovered = true;
+  return seedState();
+}
+function saveState() {
+  if (!storageOK) return;
+  dirty = true;
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(flushSave, CONFIG.SAVE_DEBOUNCE_MS);
+}
+function flushSave() {
+  clearTimeout(saveTimer);
+  if (!storageOK) return;
+  try { localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(state)); dirty = false; }
+  catch (e) { storageOK = false; toastSafe("info", "Brauzer xotirasi mavjud emas — yozuvlar sahifa yangilanganda yo'qoladi."); }
+}
+function resetState() {
+  try {
+    localStorage.removeItem(CONFIG.STORAGE_KEY);
+    CONFIG.LEGACY_KEYS.forEach((k) => localStorage.removeItem(k));
+  } catch (e) {}
+  state = seedState();
+  saveState();
+  render();
+  announce("Demo ma'lumotlar tiklandi");
+  toastSafe("success", "Demo ma'lumotlar tiklandi");
+}
+function announce(msg) { const live = $("#live"); if (live) { live.textContent = ""; setTimeout(() => { live.textContent = msg; }, 30); } }
+
+let toastSeq = 0;
+let overLimitToast = null;
+function toastSafe(type, msg, opts) {
+  const region = $("#toasts"); if (!region) return;
+  const o = opts || {};
+  const id = "t" + (++toastSeq);
+  const icons = {
+    success: '<path d="m20 6-11 11-5-5"/>',
+    info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.6v.2"/>',
+    error: '<circle cx="12" cy="12" r="9"/><path d="m9 9 6 6m0-6-6 6"/>'
+  };
+  const el = document.createElement("div");
+  el.className = "toast toast--" + type + (o.persistent ? " toast--persistent" : "");
+  el.id = id;
+  if (type === "error") el.setAttribute("role", "alert");
+  const ms = o.persistent ? 0 : (o.duration || 4000);
+  if (ms) el.style.setProperty("--toast-dur", ms + "ms"); else { const bar = document.createElement("span"); bar.className = "toast__bar"; bar.style.display = "none"; el.dataset.persistent = "1"; }
+  el.innerHTML =
+    '<svg class="toast__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + icons[type] + "</svg>" +
+    '<div><div class="toast__title"></div>' + (o.body ? '<div class="toast__body"></div>' : "") + "</div>";
+  el.querySelector(".toast__title").textContent = o.title || msg;
+  if (o.body) el.querySelector(".toast__body").textContent = o.body;
+  const close = document.createElement("button");
+  close.type = "button"; close.className = "toast__close"; close.setAttribute("aria-label", "Xabarnomani yopish"); close.textContent = "✕";
+  el.appendChild(close);
+  if (ms) { const bar = document.createElement("span"); bar.className = "toast__bar"; bar.setAttribute("aria-hidden", "true"); el.appendChild(bar); }
+  region.appendChild(el);
+  const live = $$(".toast:not(.toast--out)", region);
+  if (live.length > 3 && !live[0].contains(document.activeElement)) dismissToast(live[0], true);
+  let timer = 0, left = ms, t0 = performance.now(), paused = false;
+  const arm = () => { if (!ms) return; clearTimeout(timer); timer = setTimeout(() => dismissToast(el), Math.max(left, 0)); };
+  const pause = () => { if (!ms || paused) return; paused = true; clearTimeout(timer); left -= performance.now() - t0; const b = el.querySelector(".toast__bar"); if (b) b.style.animationPlayState = "paused"; };
+  const resume = () => { if (!ms || !paused) return; paused = false; t0 = performance.now(); arm(); const b = el.querySelector(".toast__bar"); if (b) b.style.animationPlayState = "running"; };
+  if (ms) { arm(); el.addEventListener("pointerenter", pause); el.addEventListener("pointerleave", resume); el.addEventListener("focusin", pause); el.addEventListener("focusout", resume); }
+  close.addEventListener("click", () => dismissToast(el));
+  return el;
+}
+function dismissToast(el, instant) {
+  if (!el || el.dataset.dismissed) return;
+  el.dataset.dismissed = "1";
+  if (instant || REDUCED.matches) { el.remove(); return; }
+  el.classList.add("toast--out");
+  el.addEventListener("animationend", () => el.remove(), { once: true });
+  setTimeout(() => el.remove(), 400);
+}
+
+const dispCache = new WeakMap();
+function countUp(el, to, format) {
+  if (!el) return;
+  if (el._raf) { cancelAnimationFrame(el._raf); el._raf = 0; }
+  const from = dispCache.has(el) ? dispCache.get(el) : 0;
+  if (firstRender || REDUCED.matches) { el.textContent = format(to); dispCache.set(el, to); return; }
+  if (eq(from, to)) { el.textContent = format(to); dispCache.set(el, to); return; }
+  const t0 = performance.now(), dur = CONFIG.COUNT_UP_MS;
+  const tick = (now) => {
+    const p = Math.min((now - t0) / dur, 1);
+    const e = 1 - Math.pow(1 - p, 3);
+    const v = from + (to - from) * e;
+    el.textContent = format(v);
+    dispCache.set(el, v);
+    if (p < 1) el._raf = requestAnimationFrame(tick);
+    else { el.textContent = format(to); dispCache.set(el, to); el._raf = 0; }
+  };
+  el._raf = requestAnimationFrame(tick);
+}
+
+function el(tag, opts, children) {
+  const n = document.createElement(tag);
+  if (opts) {
+    if (opts.class) n.className = opts.class;
+    if (opts.text != null) n.textContent = String(opts.text);
+    if (opts.title != null) n.title = opts.title;
+    if (opts.dataset) for (const k in opts.dataset) n.dataset[k] = opts.dataset[k];
+    if (opts.attrs) for (const k in opts.attrs) n.setAttribute(k, opts.attrs[k]);
+  }
+  (children || []).forEach((c) => { if (c) n.appendChild(c); });
+  return n;
+}
+const segVar = (i) => "var(--cat-" + i + ")";
+
+function renderStudent() {
+  const s = state, st = statusOf(s);
+  const init = s.student.name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join("") || "?";
+  $("#studentInitials").textContent = init;
+  $("#studentName").textContent = s.student.name;
+  $("#studentId").textContent = s.student.id;
+  $("#studentGroup").textContent = s.student.group;
+  $("#headerGroup").textContent = s.student.group;
+  $("#studentLimit").textContent = NF2.format(s.student.limit) + " ball";
+  const badge = $("#statusBadge");
+  badge.className = "badge badge--" + (st === STATUS.ACTIVE ? "ok" : st === STATUS.WARNING ? "warn" : "danger");
+  $("#statusText").textContent = st === STATUS.ACTIVE ? "Faol" : st === STATUS.WARNING ? "Limit tugash arafasida" : "Limit tugagan";
+  const remaining = remainingPoints(s);
+  $("#statusHelp").textContent = st === STATUS.ACTIVE
+    ? "Limitdan foydalanish me'yorda."
+    : st === STATUS.WARNING
+      ? "Limitning " + NF1.format(percentUsed(s)) + "% ishlatildi — " + NF2.format(remaining) + " ball qoldi."
+      : "Qolgan limit yo'q. Yozuvni o'chirsangiz, ball limitga qaytadi.";
+}
+
+function renderKpis() {
+  const s = state, used = usedPoints(s), pct = percentUsed(s);
+  countUp($("#kpiTotal"), s.student.limit, (v) => NF2.format(v));
+  countUp($("#kpiUsed"), used, (v) => NF2.format(v));
+  countUp($("#kpiLeft"), Math.max(0, remainingPoints(s)), (v) => NF2.format(v));
+  countUp($("#kpiPct"), pct, (v) => NF1.format(v));
+  const latest = s.entries.slice().sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))[0];
+  $("#kpiSubUsed").textContent = latest ? "Oxirgi: " + fmtRelative(latest.date) : "—";
+  $("#kpiSubLeft").textContent = NF1.format(Math.max(0, 100 - pct)) + "% qoldi";
+  $("#kpiSubCount").textContent = s.entries.length + " ta yozuv";
+  const leftCard = $("#kpiLeftCard");
+  const ratio = s.student.limit > 0 ? Math.max(0, remainingPoints(s)) / s.student.limit : 0;
+  leftCard.classList.toggle("kpi--hero", ratio <= CONFIG.HERO_RATIO);
+  leftCard.classList.toggle("is-danger", ratio <= 0);
+}
+
+function renderProgress() {
+  const s = state, used = usedPoints(s), limit = s.student.limit, pct = percentUsed(s);
+  const bar = $("#bar"), segs = $("#segs");
+  bar.setAttribute("aria-valuemin", "0");
+  bar.setAttribute("aria-valuemax", String(limit));
+  bar.setAttribute("aria-valuenow", String(used));
+  bar.setAttribute("aria-valuetext", "Ishlatilgan " + NF2.format(used) + " / " + NF2.format(limit) + " ball (" + NF1.format(pct) + "%). Qolgan " + NF2.format(Math.max(0, remainingPoints(s))) + " ball.");
+  countUp($("#pctNum"), pct, (v) => NF1.format(v));
+  $("#fracUsed").textContent = NF2.format(used);
+  $("#fracTotal").textContent = NF2.format(limit);
+  const key = state.entries.map((e) => e.id + ":" + e.points).join("|") + "|L" + state.student.limit;
+  if (segs.dataset.key === key) { applyHighlight(); return; }
+  segs.dataset.key = key;
+  segs.textContent = "";
+  const frag = document.createDocumentFragment();
+  state.entries.forEach((e) => {
+    const p = state.student.limit > 0 ? Math.min(100, (e.points / state.student.limit) * 100) : 0;
+    const seg = document.createElement("span");
+    seg.className = "seg";
+    seg.dataset.id = e.id;
+    seg.dataset.teacher = teacherKey(e.teacher);
+    seg.style.flex = "0 0 " + p + "%";
+    seg.style.setProperty("--seg-c", segVar(e.colorIndex));
+    seg.title = e.teacher + " — " + e.subject + ": +" + NF2.format(e.points) + " ball (" + NF1.format(p) + "%)";
+    seg.setAttribute("aria-hidden", "true");
+    frag.appendChild(seg);
+  });
+  segs.appendChild(frag);
+  const lastSeg = segs.lastElementChild;
+  if (!firstRender && lastSeg && lastSeg.dataset.id === lastAddedId) lastSeg.classList.add("seg--in");
+  if (!firstRender) {
+    bar.classList.remove("bar--pulse");
+    void bar.offsetWidth;
+    bar.classList.add("bar--pulse");
+  }
+  applyHighlight();
+}
+
+function legendData() {
+  const map = new Map();
+  for (const e of state.entries) {
+    const k = teacherKey(e.teacher);
+    if (!map.has(k)) map.set(k, { key: k, teacher: e.teacher, points: 0, colorIndex: e.colorIndex, subjects: new Set() });
+    const item = map.get(k);
+    item.points = round1(item.points + e.points);
+    item.subjects.add(e.subject);
+  }
+  return Array.from(map.values());
+}
+function renderLegend() {
+  const wrap = $("#legend"), empty = $("#legendEmpty");
+  const items = legendData();
+  empty.hidden = items.length > 0;
+  empty.textContent = "Hali ball qo'shilmagan — barcha " + NF2.format(state.student.limit) + " ball mavjud.";
+  wrap.textContent = "";
+  const frag = document.createDocumentFragment();
+  if (hlTeacher && !items.some((i) => i.key === hlTeacher)) hlTeacher = null;
+  for (const it of items) {
+    const subjects = Array.from(it.subjects);
+    const sub = subjects.length === 1 ? subjects[0] : subjects.length + " ta fan";
+    const pct = state.student.limit > 0 ? (it.points / state.student.limit) * 100 : 0;
+    const btn = el("button", {
+      class: "legend-btn", attrs: { type: "button", "aria-pressed": "false", "aria-label": it.teacher + ", " + sub + ", " + NF2.format(it.points) + " ball, " + NF1.format(pct) + " foiz — ajratib ko'rsatish", title: it.teacher + " — " + NF2.format(it.points) + " ball (" + NF1.format(pct) + "%)" }, dataset: { teacher: it.key }
+    }, [
+      el("span", { class: "legend-btn__av", text: (it.teacher.trim()[0] || "?").toUpperCase(), attrs: { "aria-hidden": "true" } }),
+      el("span", { class: "legend-btn__txt" }, [
+        el("span", { class: "legend-btn__name", text: it.teacher }),
+        el("span", { class: "legend-btn__sub", text: sub })
+      ]),
+      el("span", { class: "legend-btn__pts", text: "+" + NF2.format(it.points), attrs: { "aria-hidden": "true" } })
+    ]);
+    btn.style.setProperty("--seg-c", segVar(it.colorIndex));
+    btn.style.setProperty("--seg-ink", "var(--cat-" + it.colorIndex + "-ink)");
+    frag.appendChild(btn);
+  }
+  wrap.appendChild(frag);
+}
+function applyHighlight() {
+  const bar = $("#bar");
+  bar.toggleAttribute("data-active", !!hlTeacher);
+  $$(".seg", bar).forEach((seg) => {
+    if (hlTeacher && seg.dataset.teacher === hlTeacher) seg.setAttribute("data-active", "");
+    else seg.removeAttribute("data-active");
+  });
+  $$(".legend-btn", $("#legend")).forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.teacher === hlTeacher)));
+}
+
+function filteredEntries() {
+  let list = state.entries.slice();
+  if (filterQuery) {
+    const q = filterQuery.toLowerCase();
+    list = list.filter((e) => e.teacher.toLowerCase().indexOf(q) >= 0 || e.subject.toLowerCase().indexOf(q) >= 0);
+  }
+  const dir = sort.dir === "asc" ? 1 : -1;
+  list.sort((a, b) => {
+    let r = 0;
+    if (sort.key === "points") r = a.points - b.points;
+    else if (sort.key === "date") r = a.date < b.date ? -1 : a.date > b.date ? 1 : 0;
+    else r = COLL.compare(a[sort.key], b[sort.key]);
+    if (r === 0) r = a.createdAt < b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+    return r * dir;
+  });
+  return list;
+}
+function renderTable() {
+  const body = $("#logBody"), scroll = $("#tableScroll");
+  const all = state.entries, list = filteredEntries();
+  const isFilter = filterQuery.length > 0;
+  $("#logCount").textContent = (isFilter ? list.length + " / " + all.length : all.length) + " ta yozuv";
+  $("#logTotal").textContent = NF2.format(usedPoints(state));
+  $("#logCaption").textContent = "Ball yozuvlari: " + all.length + " ta, jami " + NF2.format(usedPoints(state)) + " ball";
+  const empty = $("#logEmpty"), emptyF = $("#logFilterEmpty");
+  empty.hidden = !(all.length === 0);
+  emptyF.hidden = !(all.length > 0 && list.length === 0);
+  scroll.hidden = all.length === 0 || list.length === 0;
+  $$(".sort-btn", $("#logTable")).forEach((b) => {
+    const active = b.dataset.sort === sort.key;
+    b.dataset.active = String(active);
+    b.closest("th").setAttribute("aria-sort", active ? (sort.dir === "asc" ? "ascending" : "descending") : "none");
+    const arrow = b.querySelector(".sort-btn__arrow");
+    if (arrow) arrow.textContent = active && sort.dir === "desc" ? "▼" : "▲";
+  });
+  body.textContent = "";
+  if (!list.length) return;
+  const frag = document.createDocumentFragment();
+  for (const e of list) {
+    const tr = document.createElement("tr");
+    tr.dataset.id = e.id;
+    if (e.id === lastAddedId) { tr.className = "row-flash"; }
+    const tdT = document.createElement("th");
+    tdT.scope = "row";
+    tdT.className = "cell--sticky";
+    const tc = el("span", { class: "teacher-cell" }, [
+      el("span", { class: "avatar avatar--sm", text: (e.teacher.trim()[0] || "?").toUpperCase(), attrs: { "aria-hidden": "true" } }),
+      el("span", { class: "teacher-cell__name", text: e.teacher, title: e.teacher, attrs: { "aria-hidden": "false" } })
+    ]);
+    tc.querySelector(".avatar").style.setProperty("--seg-c", segVar(e.colorIndex));
+    tc.querySelector(".avatar").style.setProperty("--seg-ink", "var(--cat-" + e.colorIndex + "-ink)");
+    tdT.appendChild(tc);
+    tr.appendChild(tdT);
+    const tdS = el("td", { class: "cell-subject", text: e.subject, title: e.subject });
+    tr.appendChild(tdS);
+    const time = el("time", { text: fmtDate(e.date), attrs: { datetime: e.date }, title: fmtRelative(e.date) });
+    tr.appendChild(el("td", null, [time]));
+    const chip = el("span", { class: "points-chip", text: "+" + NF2.format(e.points) });
+    chip.style.setProperty("--seg-c", segVar(e.colorIndex));
+    chip.style.setProperty("--seg-ink", "var(--cat-" + e.colorIndex + "-ink)");
+    tr.appendChild(el("td", { class: "log-table__num" }, [chip]));
+    const actionsCell = el("td", null, [el("span", { class: "row-actions" }, [buildDelete(e)])]);
+    tr.appendChild(actionsCell);
+    frag.appendChild(tr);
+  }
+  body.appendChild(frag);
+}
+function buildDelete(e) {
+  if (pendingDeleteId === e.id) {
+    const box = el("span", { class: "confirm-box", attrs: { role: "group", "aria-label": "O'chirishni tasdiqlash" } });
+    box.appendChild(el("span", { class: "confirm-box__q", text: "O'chirilsinmi?" }));
+    const yes = el("button", { class: "btn btn--danger", text: "Ha, o'chirish", attrs: { type: "button", "data-action": "confirm-del", "data-id": e.id, "aria-label": "Ha, o'chirish — " + e.teacher + ", " + NF2.format(e.points) + " ball limitga qaytadi" } });
+    const no = el("button", { class: "btn btn--ghost", text: "Bekor qilish", attrs: { type: "button", "data-action": "cancel-del", "data-id": e.id } });
+    box.appendChild(yes); box.appendChild(no);
+    return box;
+  }
+  const btn = el("button", { class: "del-btn", attrs: { type: "button", "data-action": "del", "data-id": e.id, "aria-label": e.teacher + " yozuvini o'chirish" } });
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg>';
+  return btn;
+}
+let lastAddedId = null;
+let lastAddedTimer = 0;
+
+function renderFormState() {
+  const s = state, remaining = Math.max(0, remainingPoints(s));
+  const lock = remaining <= CONFIG.EPS;
+  $("#scoreFieldset").disabled = lock;
+  $("#lockBanner").hidden = !lock;
+  updatePointsHint();
+  const submit = $("#submitBtn"), fill = $("#fillRemaining");
+  submit.disabled = lock;
+  fill.disabled = lock;
+  const title = lock ? "Limit tugagan — yangi ball qo'shib bo'lmaydi" : "";
+  submit.title = title; fill.title = lock ? title : "Qolgan limitni bir bosishda to'ldirish";
+}
+function updatePointsHint() {
+  const remaining = Math.max(0, remainingPoints(state));
+  const el = $("#fPointsHint");
+  const v = toNumber($("#fPoints").value);
+  if (Number.isFinite(v) && v > 0) {
+    const after = round1(remaining - v);
+    el.textContent = "Qolgan limit: " + NF2.format(remaining) + " ball · bu yozuvdan keyin: " + NF2.format(Math.max(0, after)) + " ball" + (after < 0 ? " (limitdan oshadi)" : "");
+  } else {
+    el.textContent = "Qolgan limit: " + NF2.format(remaining) + " ball";
+  }
+}
+function render() {
+  renderStudent();
+  renderKpis();
+  renderProgress();
+  renderLegend();
+  renderTable();
+  renderFormState();
+  applyHighlight();
+  firstRender = false;
+}
+function fieldWrap(name) { return $('.field[data-field="' + name + '"]'); }
+function fieldInput(name) { return $("#f" + name.charAt(0).toUpperCase() + name.slice(1)); }
+function clearError(name) {
+  const w = fieldWrap(name); if (!w) return;
+  w.classList.remove("is-invalid", "is-shaking");
+  const inp = fieldInput(name);
+  if (inp) inp.removeAttribute("aria-invalid");
+  const err = $("#e" + name.charAt(0).toUpperCase() + name.slice(1));
+  if (err) { err.hidden = true; err.textContent = ""; }
+}
+function clearErrors() { ["teacher", "subject", "subjectCustom", "date", "points"].forEach(clearError); }
+function setCustom(show) {
+  fieldWrap("subjectCustom").hidden = !show;
+  const inp = $("#fSubjectCustom");
+  inp.required = show;
+  if (!show) { inp.value = ""; clearError("subjectCustom"); }
+}
+function showError(name, msg) {
+  const w = fieldWrap(name); if (!w) return;
+  w.classList.add("is-invalid");
+  const inp = fieldInput(name);
+  if (inp) inp.setAttribute("aria-invalid", "true");
+  const err = $("#e" + name.charAt(0).toUpperCase() + name.slice(1));
+  if (err) { err.textContent = msg; err.hidden = false; }
+  w.classList.remove("is-shaking"); void w.offsetWidth; w.classList.add("is-shaking");
+  if (inp) inp.focus();
+}
+function readForm() {
+  return {
+    teacher: $("#fTeacher").value,
+    subject: $("#fSubject").value,
+    subjectCustom: $("#fSubjectCustom").value,
+    date: $("#fDate").value,
+    points: $("#fPoints").value
+  };
+}
+
+function addScore() {
+  const now = performance.now();
+  if (now - lastSubmitAt < CONFIG.RESUBMIT_GUARD_MS) return;
+  lastSubmitAt = now;
+  const res = applyAdd(state, readForm());
+  clearErrors();
+  if (!res.ok) {
+    if (res.field) showError(res.field, res.msg);
+    else { const alert = $("#formAlert"); alert.textContent = res.msg; alert.hidden = false; }
+    if (res.code === "POINTS_OVER_LIMIT") {
+      if (overLimitToast) dismissToast(overLimitToast, true);
+      overLimitToast = toastSafe("error", res.msg, { title: res.msg, body: "Qolgan limit: " + NF2.format(Math.max(0, remainingPoints(state))) + " ball. Ballni kamaytiring yoki kerak bo'lmagan yozuvni o'chiring.", persistent: true });
+    }
+    return;
+  }
+  if (overLimitToast) { dismissToast(overLimitToast, true); overLimitToast = null; }
+  $("#formAlert").hidden = true;
+  state = res.state;
+  lastAddedId = res.entry.id;
+  saveState();
+  render();
+  announce(NF2.format(res.entry.points) + " ball qo'shildi, qolgan " + NF2.format(Math.max(0, remainingPoints(state))) + " ball");
+  toastSafe("success", NF2.format(res.entry.points) + " ball qo'shildi", { body: "Qolgan limit: " + NF2.format(Math.max(0, remainingPoints(state))) + " ball" });
+  const st = statusOf(state);
+  if (st === STATUS.EXHAUSTED) toastSafe("info", "Limit tugadi. Yangi ball qo'shish uchun yozuvni o'chiring.");
+  else if (st === STATUS.WARNING) toastSafe("info", "Diqqat: limitning " + NF1.format(percentUsed(state)) + "% ishlatildi.");
+  $("#fTeacher").value = "";
+  $("#fSubject").value = "";
+  $("#fPoints").value = "";
+  setCustom(false);
+  $("#fDate").value = todayISO();
+  updatePointsHint();
+  const teacherInput = $("#fTeacher");
+  if (teacherInput.disabled) { const lb = $("#lockBanner"); lb.setAttribute("tabindex", "-1"); lb.focus(); }
+  else teacherInput.focus();
+  clearTimeout(lastAddedTimer);
+  lastAddedTimer = setTimeout(() => { lastAddedId = null; }, CONFIG.ROW_FLASH_MS);
+}
+function removeScore(id) {
+  const idx = filteredEntries().findIndex((e) => e.id === id);
+  const res = applyRemove(state, id);
+  pendingDeleteId = null;
+  if (!res.ok) return;
+  const removed = state.entries.find((e) => e.id === id);
+  state = res.state;
+  saveState();
+  render();
+  if (removed) {
+    announce("Yozuv o'chirildi — " + NF2.format(removed.points) + " ball limitga qaytdi");
+    toastSafe("success", "Yozuv o'chirildi", { body: NF2.format(removed.points) + " ball limitga qaytdi" });
+  }
+  const rows = $$("tr[data-id]", $("#logBody"));
+  const target = rows.length ? rows[Math.min(Math.max(idx, 0), rows.length - 1)] : null;
+  const nextBtn = target ? target.querySelector(".del-btn") : null;
+  if (nextBtn) nextBtn.focus();
+  else { const h = $("#formTitle"); h.setAttribute("tabindex", "-1"); h.focus(); }
+}
+
+function bind() {
+  THEME.init();
+  $("#printBtn").addEventListener("click", () => window.print());
+  $("#year").textContent = String(new Date().getFullYear());
+
+  const dateInput = $("#fDate");
+  const yearAgo = new Date();
+  yearAgo.setFullYear(yearAgo.getFullYear() - 1);
+  dateInput.value = todayISO();
+  dateInput.max = todayISO();
+  dateInput.min = isoFromDate(yearAgo);
+
+  const form = $("#scoreForm");
+  form.addEventListener("input", (e) => {
+    const w = e.target.closest("[data-field]");
+    if (w) clearError(w.dataset.field);
+    $("#formAlert").hidden = true;
+    if (e.target.id === "fPoints") {
+      const cleaned = e.target.value.replace(/[^\d.,]/g, "").replace(/^([^.,]*[.,][^.,]*)[.,]/, "$1").slice(0, CONFIG.POINTS_MAX_CHARS);
+      if (cleaned !== e.target.value) e.target.value = cleaned;
+      updatePointsHint();
+    }
+  });
+  form.addEventListener("change", (e) => {
+    const w = e.target.closest("[data-field]");
+    if (w) clearError(w.dataset.field);
+  });
+  $("#fSubject").addEventListener("change", (e) => {
+    const custom = e.target.value === "Boshqa";
+    setCustom(custom);
+    if (custom) $("#fSubjectCustom").focus();
+  });
+  $("#fillRemaining").addEventListener("click", () => {
+    const remaining = Math.max(0, remainingPoints(state));
+    if (remaining <= CONFIG.EPS) return;
+    const pts = $("#fPoints");
+    pts.value = String(remaining);
+    clearError("points");
+    updatePointsHint();
+    pts.focus();
+  });
+  form.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape" || !e.target.matches("input, select")) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const t = e.target, w = t.closest("[data-field]");
+    if (t.type === "date") t.value = todayISO();
+    else if (t.tagName === "SELECT") { t.value = ""; setCustom(false); }
+    else t.value = "";
+    if (w) clearError(w.dataset.field);
+    if (t.id === "fPoints") updatePointsHint();
+  });
+  form.addEventListener("submit", (e) => { e.preventDefault(); if ($("#submitBtn").disabled) return; addScore(); });
+
+  let searchTimer = 0;
+  $("#logSearch").addEventListener("input", (e) => {
+    const v = e.target.value.trim();
+    $("#logSearchClear").hidden = v.length === 0;
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => { filterQuery = v; renderTable(); }, CONFIG.SEARCH_DEBOUNCE_MS);
+  });
+  $("#logSearchClear").addEventListener("click", clearFilter);
+  $("#filterClearCta").addEventListener("click", clearFilter);
+  function clearFilter() {
+    filterQuery = "";
+    $("#logSearch").value = "";
+    $("#logSearchClear").hidden = true;
+    renderTable();
+    $("#logSearch").focus();
+  }
+  $("#emptyCta").addEventListener("click", () => { $("#fTeacher").focus(); });
+
+  $("#tableScroll").addEventListener("scroll", (e) => { e.currentTarget.dataset.scrolled = String(e.currentTarget.scrollLeft > 2); }, { passive: true });
+
+  $("#logBody").addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-action]");
+    if (!btn) return;
+    const id = btn.dataset.id;
+    if (btn.dataset.action === "del") {
+      const entry = state.entries.find((x) => x.id === id);
+      pendingDeleteId = id;
+      renderTable();
+      const n = $('[data-action="confirm-del"]');
+      if (n) n.focus();
+      announce(entry ? entry.teacher + " yozuvini o'chirishni tasdiqlang" : "O'chirishni tasdiqlang");
+    }
+    else if (btn.dataset.action === "cancel-del") { pendingDeleteId = null; renderTable(); const d = $('[data-action="del"][data-id="' + CSS.escape(id) + '"]'); if (d) d.focus(); }
+    else if (btn.dataset.action === "confirm-del") { removeScore(id); }
+  });
+  $("#logTable").addEventListener("click", (e) => {
+    const b = e.target.closest(".sort-btn");
+    if (!b) return;
+    if (sort.key === b.dataset.sort) sort.dir = sort.dir === "asc" ? "desc" : "asc";
+    else { sort.key = b.dataset.sort; sort.dir = b.dataset.sort === "date" ? "desc" : "asc"; }
+    renderTable();
+  });
+  $("#legend").addEventListener("click", (e) => {
+    const b = e.target.closest(".legend-btn");
+    if (!b) return;
+    hlTeacher = hlTeacher === b.dataset.teacher ? null : b.dataset.teacher;
+    applyHighlight();
+  });
+
+  const resetBtn = $("#resetBtn");
+  let resetArmedTimer = 0;
+  resetBtn.addEventListener("click", () => {
+    if (resetBtn.dataset.armed === "true") { clearTimeout(resetArmedTimer); resetBtn.dataset.armed = "false"; resetBtn.textContent = "Demo ma'lumotlarni tiklash"; resetState(); return; }
+    resetBtn.dataset.armed = "true";
+    resetBtn.textContent = "Ishonchingiz komilmi? Qayta bosing";
+    announce("Demo ma'lumotlarni tiklaysizmi? Tasdiqlash uchun qayta bosing.");
+    resetArmedTimer = setTimeout(() => { resetBtn.dataset.armed = "false"; resetBtn.textContent = "Demo ma'lumotlarni tiklash"; }, 4000);
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape" || !pendingDeleteId) return;
+    const id = pendingDeleteId;
+    pendingDeleteId = null;
+    renderTable();
+    const d = $('[data-action="del"][data-id="' + CSS.escape(id) + '"]');
+    if (d) d.focus();
+  });
+
+  window.addEventListener("storage", (e) => {
+    if (e.key !== CONFIG.STORAGE_KEY) return;
+    clearTimeout(saveTimer);
+    const remote = loadState();
+    if (!remote) return;
+    if (dirty) {
+      const seen = new Set(state.entries.map((x) => x.id));
+      const additions = remote.entries.filter((x) => !seen.has(x.id));
+      const candidate = { version: state.version, student: state.student, entries: state.entries.concat(additions) };
+      if (additions.length && !gt(usedPoints(candidate), candidate.student.limit)) {
+        state = candidate;
+        saveState();
+        render();
+        toastSafe("info", "Boshqa oynadagi yozuvlar birlashtirildi.");
+      } else if (additions.length) {
+        toastSafe("info", "Boshqa oynada o'zgarish bor, lekin limit yetarli emas — bu oynadagi holat saqlandi.");
+      }
+      return;
+    }
+    state = remote;
+    render();
+    toastSafe("info", "Boshqa oynadagi o'zgarishlar yuklandi.");
+  });
+  window.addEventListener("pagehide", flushSave);
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flushSave(); });
+  window.addEventListener("beforeprint", () => { $$(".toast", $("#toasts")).forEach((t) => t.remove()); });
+}
+
+function init() {
+  state = loadState();
+  render();
+  bind();
+  if (stateRecovered) toastSafe("info", "Saqlangan ma'lumotlar buzilgan edi — demo ma'lumotlar tiklandi. Yozuvlaringiz yo'qolgan bo'lishi mumkin.", { duration: 7000 });
+  if (!storageOK) toastSafe("info", "Brauzer xotirasi mavjud emas — yozuvlar sahifa yangilanganda yo'qoladi.", { persistent: false, duration: 6000 });
+  window.BLP_CORE = {
+    CONFIG, STATUS, PALETTE_SIZE, round1, eq, gte, gt, toNumber, parseISODate, newId, todayISO,
+    colorIndexOf, teacherKey, seedState, usedPoints, remainingPoints, percentUsed, statusOf,
+    validate, applyAdd, applyRemove, applyLimit, sanitizeState, migrateState
+  };
+}
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
+else init();
+</script>
+</body>
+</html>
