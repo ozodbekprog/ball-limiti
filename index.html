@@ -8,7 +8,8 @@
 <meta name="theme-color" id="tcLight" media="(prefers-color-scheme: light)" content="#f7f8fa">
 <meta name="theme-color" id="tcDark" media="(prefers-color-scheme: dark)" content="#0b0d12">
 <meta name="description" content="Talaba ball limitini nazorat qilish paneli: qo'shilgan ballar, qolgan limit va ishlangan foiz.">
-<title>Ball Limiti Nazorat Paneli — S20054</title>
+<meta name="author" content="Bekmirzo Jumaboyev">
+<title>Ball Limiti Nazorat Paneli — Bekmirzo Jumaboyev</title>
 <script>
 (function(){
   var mode = 'auto';
@@ -214,8 +215,27 @@ img,svg{ display:block; }
 .panel__head{ display:flex; align-items:center; gap:var(--space-3); flex-wrap:wrap; margin-bottom:var(--space-3); }
 .panel__title{ font-size:var(--fs-lg); font-weight:650; letter-spacing:-.01em; }
 
-.student-card{
-  display:grid; grid-template-columns:auto minmax(0,1fr); gap:var(--space-4);
+.author-hero{
+  padding:clamp(20px,4vw,34px) clamp(16px,3vw,28px); border-radius:var(--r-lg); text-align:center;
+  background:var(--bg-surface);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 12%,var(--bg-surface)),var(--bg-surface) 62%);
+  border:1px solid var(--border); box-shadow:var(--shadow-xs);
+}
+.author-hero__label{
+  font-size:var(--fs-xs); font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--accent-text);
+}
+.author-hero__name{
+  margin-top:8px; overflow-wrap:anywhere;
+  font-size:clamp(1.75rem,8vw,4.2rem); line-height:1.05; font-weight:800; letter-spacing:-.03em;
+  color:var(--accent-text);
+  background:linear-gradient(92deg,var(--accent-text),color-mix(in srgb,var(--accent-text) 45%,var(--text)));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+@supports not ((background-clip:text) or (-webkit-background-clip:text)){
+  .author-hero__name{ color:var(--accent-text); background:none; }
+}
+.student-card{  display:grid; grid-template-columns:auto minmax(0,1fr); gap:var(--space-4);
   align-items:center; background:linear-gradient(180deg,var(--bg-surface),color-mix(in srgb,var(--accent) 3%,var(--bg-surface)));
 }
 .avatar{
@@ -611,6 +631,10 @@ html,body,.card,.kpi,.btn,.icon-btn,.field__input,.toast,.seg,.badge{
 
 <main id="main" class="layout container" tabindex="-1">
   <h1 class="sr-only">Ball limiti nazorat paneli — talaba ballari va limit sarfi</h1>
+  <section class="author-hero" aria-label="Loyiha muallifi">
+    <p class="author-hero__label">Loyiha muallifi</p>
+    <p class="author-hero__name">Bekmirzo Jumaboyev</p>
+  </section>
   <section class="card student-card" aria-labelledby="studentName">
     <span class="avatar avatar--lg" aria-hidden="true" id="studentInitials">DK</span>
     <div class="student-card__info">
@@ -782,6 +806,7 @@ html,body,.card,.kpi,.btn,.icon-btn,.field__input,.toast,.seg,.badge{
     <p>Ma'lumotlar faqat shu brauzerda (localStorage) saqlanadi.</p>
     <p>
       Ball Limiti Nazorat Paneli · <span id="year">2026</span> ·
+      Muallif: <strong>Bekmirzo Jumaboyev</strong> ·
       <button class="footer-reset" id="resetBtn" type="button">Demo ma'lumotlarni tiklash</button>
     </p>
   </div>
